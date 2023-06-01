@@ -68,6 +68,7 @@ export const RegistrationScreen = () => {
 
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.inputsContainer}>
+              {/* О. Собчук: сенс KeyboardAvoidingView в тому, щоб було видно інпут при фокусі */}
               <KeyboardAvoidingView
                 behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
               >
