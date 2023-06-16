@@ -21,14 +21,40 @@ const INIT_STATE = {
 };
 
 export const LoginScreen = () => {
+  const relativePathImages = '../../../assets/images/';
+
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
-  const [focusedInput, setFocusedInput] = useState();
+  const [focusedInput, setFocusedInput] = useState(INIT_STATE.focusedInput);
+
+  const handleEmail = (text) => {
+    setEmail(text);
+  };
+  const handlePassword = (text) => {
+    setPassword(text);
+  };
+
+  const handleShowPassword = () => {
+    if (!password) {
+      console.debug('Enter password');
+      alert('Enter password');
+      return;
+    }
+    console.debug(`You password is: ${password}`);
+    alert(`You password is: ${password}`);
+  };
 
   const onLogin = () => {
-    Alert.alert('Credentials', `${email} + ${password}`);
+    if (!email || !password) {
+      alert('Fill in all fields');
+      return;
+    }
+    console.debug('Credentials:', `email: ${email}, password: ${password}`);
+    Alert.alert('Credentials:', `email: ${email}, password: ${password}`);
+
+    setEmail('');
+    setPassword('');
   };
-  const relativePathImages = '../../../assets/images/';
 
   return (
     <View style={styles.bgImageContainer}>
@@ -52,7 +78,7 @@ export const LoginScreen = () => {
                     name="email"
                     placeholder="Адреса електронної пошти"
                     value={email}
-                    onChangeText={setEmail}
+                    onChangeText={handleEmail}
                     keyboardType="email-address"
                     style={{
                       ...styles.input,
@@ -73,7 +99,7 @@ export const LoginScreen = () => {
                       placeholder="Пароль"
                       secureTextEntry
                       value={password}
-                      onChangeText={setPassword}
+                      onChangeText={handlePassword}
                       style={{
                         ...styles.input,
                         borderColor:
@@ -89,7 +115,7 @@ export const LoginScreen = () => {
 
                     <Pressable
                       title=""
-                      onPress={onLogin}
+                      onPress={handleShowPassword}
                       style={styles.textShowWraper}
                     >
                       <Text style={styles.textShow}>Показати</Text>
@@ -104,7 +130,11 @@ export const LoginScreen = () => {
             </View>
           </TouchableWithoutFeedback>
 
-          <Pressable title="" onPress={onLogin} style={styles.textEnterWraper}>
+          <Pressable
+            title=""
+            // onPress={onLogin}
+            style={styles.textEnterWraper}
+          >
             <Text style={styles.textEnter}>Немає акаунту? Зареєструватися</Text>
           </Pressable>
         </View>
