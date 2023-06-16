@@ -27,11 +27,49 @@ export const RegistrationScreen = () => {
   const [login, setLogin] = useState(INIT_STATE.login);
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
-  const [focusedInput, setFocusedInput] = useState();
+  const [focusedInput, setFocusedInput] = useState(INIT_STATE.focusedInput);
+
+  const handlLogin = (text) => {
+    setLogin(text);
+  };
+
+  const handlEmail = (text) => {
+    setEmail(text);
+  };
+
+  const handlPassword = (text) => {
+    setPassword(text);
+  };
 
   const onLogin = () => {
-    Alert.alert('Credentials', `${login}  + ${email} + ${password}`);
+    if (!login || !email || !password) {
+      console.debug('Fill in all fields');
+      alert('Fill in all fields');
+      return;
+    }
+    console.debug(
+      'Credentials:',
+      `login: ${login}, email: ${email}, password: ${password}`
+    );
+    Alert.alert(
+      'Credentials:',
+      `login: ${login}, email: ${email}, password: ${password}`
+    );
+
+    setLogin('');
+    setEmail('');
+    setPassword('');
   };
+  const handleShowPassword = () => {
+    if (!password) {
+      console.debug('Enter password');
+      alert('Enter password');
+      return;
+    }
+    console.debug(`You password is: ${password}`);
+    alert(`You password is: ${password}`);
+  };
+
   const relativePathImages = '../../../assets/images/';
 
   return (
@@ -77,7 +115,7 @@ export const RegistrationScreen = () => {
                     name="login"
                     placeholder="Логін"
                     value={login}
-                    onChangeText={setLogin}
+                    onChangeText={handlLogin}
                     style={{
                       ...styles.input,
                       borderColor:
@@ -94,7 +132,7 @@ export const RegistrationScreen = () => {
                     name="email"
                     placeholder="Адреса електронної пошти"
                     value={email}
-                    onChangeText={setEmail}
+                    onChangeText={handlEmail}
                     keyboardType="email-address"
                     style={{
                       ...styles.input,
@@ -115,7 +153,7 @@ export const RegistrationScreen = () => {
                       placeholder="Пароль"
                       secureTextEntry
                       value={password}
-                      onChangeText={setPassword}
+                      onChangeText={handlPassword}
                       style={{
                         ...styles.input,
                         borderColor:
@@ -131,7 +169,7 @@ export const RegistrationScreen = () => {
 
                     <Pressable
                       title=""
-                      onPress={onLogin}
+                      onPress={handleShowPassword}
                       style={styles.textShowWraper}
                     >
                       <Text style={styles.textShow}>Показати</Text>
@@ -146,7 +184,11 @@ export const RegistrationScreen = () => {
             </View>
           </TouchableWithoutFeedback>
 
-          <Pressable title="" onPress={onLogin} style={styles.textEnterWraper}>
+          <Pressable
+            title=""
+            // onPress={onLogin}
+            style={styles.textEnterWraper}
+          >
             <Text style={styles.textEnter}>Вже є акаунт? Увійти</Text>
           </Pressable>
         </View>
