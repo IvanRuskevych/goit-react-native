@@ -18,6 +18,7 @@ const INIT_STATE = {
   email: '',
   password: '',
   focusedInput: null,
+  showPassword: false,
 };
 
 export const LoginScreen = () => {
@@ -26,6 +27,7 @@ export const LoginScreen = () => {
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
   const [focusedInput, setFocusedInput] = useState(INIT_STATE.focusedInput);
+  const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
 
   const handleEmail = (text) => {
     setEmail(text);
@@ -40,8 +42,8 @@ export const LoginScreen = () => {
       alert('Enter password');
       return;
     }
-    console.debug(`You password is: ${password}`);
-    alert(`You password is: ${password}`);
+
+    setShowPassword(!showPassword);
   };
 
   const onLogin = () => {
@@ -54,21 +56,22 @@ export const LoginScreen = () => {
 
     setEmail('');
     setPassword('');
+    setShowPassword(false);
   };
 
   return (
-    <View style={styles.bgImageContainer}>
-      <StatusBar style="auto" />
-      <ImageBackground
-        // source={{ uri: 'https://reactjs.org/logo-og.png' }}
-        source={require(`${relativePathImages}bg-img.webp`)}
-        style={styles.bgImage}
-      >
-        <View style={styles.regFormContainer}>
-          {/* registrationAvatarWrapper */}
-          <Text style={styles.regFormTitle}>увійти</Text>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.bgImageContainer}>
+        <StatusBar style="auto" />
+        <ImageBackground
+          // source={{ uri: 'https://reactjs.org/logo-og.png' }}
+          source={require(`${relativePathImages}bg-img.webp`)}
+          style={styles.bgImage}
+        >
+          <View style={styles.regFormContainer}>
+            {/* registrationAvatarWrapper */}
+            <Text style={styles.regFormTitle}>увійти</Text>
 
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.inputsContainer}>
               <KeyboardAvoidingView
                 behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
@@ -97,9 +100,11 @@ export const LoginScreen = () => {
                     <TextInput
                       name="password"
                       placeholder="Пароль"
-                      secureTextEntry
                       value={password}
                       onChangeText={handlePassword}
+                      // =======================
+                      secureTextEntry={showPassword}
+                      // ========================
                       style={{
                         ...styles.input,
                         borderColor:
@@ -118,7 +123,9 @@ export const LoginScreen = () => {
                       onPress={handleShowPassword}
                       style={styles.textShowWraper}
                     >
-                      <Text style={styles.textShow}>Показати</Text>
+                      <Text style={styles.textShow}>
+                        {showPassword ? 'Показати' : 'Сховати'}
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -128,18 +135,20 @@ export const LoginScreen = () => {
                 </Pressable>
               </KeyboardAvoidingView>
             </View>
-          </TouchableWithoutFeedback>
 
-          <Pressable
-            title=""
-            // onPress={onLogin}
-            style={styles.textEnterWraper}
-          >
-            <Text style={styles.textEnter}>Немає акаунту? Зареєструватися</Text>
-          </Pressable>
-        </View>
-      </ImageBackground>
-    </View>
+            <Pressable
+              title=""
+              // onPress={onLogin}
+              style={styles.textEnterWraper}
+            >
+              <Text style={styles.textEnter}>
+                Немає акаунту? Зареєструватися
+              </Text>
+            </Pressable>
+          </View>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

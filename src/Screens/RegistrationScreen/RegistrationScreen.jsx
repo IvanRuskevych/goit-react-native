@@ -21,6 +21,7 @@ const INIT_STATE = {
   email: '',
   password: '',
   focusedInput: null,
+  showPassword: false,
 };
 
 export const RegistrationScreen = () => {
@@ -28,6 +29,7 @@ export const RegistrationScreen = () => {
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
   const [focusedInput, setFocusedInput] = useState(INIT_STATE.focusedInput);
+  const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
 
   const handlLogin = (text) => {
     setLogin(text);
@@ -59,6 +61,7 @@ export const RegistrationScreen = () => {
     setLogin('');
     setEmail('');
     setPassword('');
+    setShowPassword(false);
   };
   const handleShowPassword = () => {
     if (!password) {
@@ -66,45 +69,45 @@ export const RegistrationScreen = () => {
       alert('Enter password');
       return;
     }
-    console.debug(`You password is: ${password}`);
-    alert(`You password is: ${password}`);
+
+    setShowPassword(!showPassword);
   };
 
   const relativePathImages = '../../../assets/images/';
 
   return (
-    <View style={styles.bgImageContainer}>
-      <StatusBar style="auto" />
-      <ImageBackground
-        // source={{ uri: 'https://reactjs.org/logo-og.png' }}
-        source={require(`${relativePathImages}bg-img.webp`)}
-        style={styles.bgImage}
-      >
-        <View style={styles.regFormContainer}>
-          {/* registrationAddAvatarWrapper */}
-          <View
-            style={{
-              ...styles.registrationAddAvatarWrapper,
-              ...styles.registrationDelAvatarWrapper, // step 1/3 закоментувати для варіанту "додати аватар"
-            }}
-          >
-            {/* step 2/3 закоментувати Image для варіанту "додати аватар" */}
-            <Image
-              source={require(`${relativePathImages}user-photo.webp`)}
-              style={styles.avatar}
-            />
-            <AntDesign
-              name="pluscircleo"
-              size={25}
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={styles.bgImageContainer}>
+        <StatusBar style="auto" />
+        <ImageBackground
+          // source={{ uri: 'https://reactjs.org/logo-og.png' }}
+          source={require(`${relativePathImages}bg-img.webp`)}
+          style={styles.bgImage}
+        >
+          <View style={styles.regFormContainer}>
+            {/* registrationAddAvatarWrapper */}
+            <View
               style={{
-                ...styles.iconAddAvatar,
-                ...styles.iconDelAvatar, // step 3/3 закоментувати для варіанту "додати аватар"
+                ...styles.registrationAddAvatarWrapper,
+                ...styles.registrationDelAvatarWrapper, // step 1/3 закоментувати для варіанту "додати аватар"
               }}
-            />
-          </View>
-          <Text style={styles.regFormTitle}>реєстрація</Text>
+            >
+              {/* step 2/3 закоментувати Image для варіанту "додати аватар" */}
+              <Image
+                source={require(`${relativePathImages}user-photo.webp`)}
+                style={styles.avatar}
+              />
+              <AntDesign
+                name="pluscircleo"
+                size={25}
+                style={{
+                  ...styles.iconAddAvatar,
+                  ...styles.iconDelAvatar, // step 3/3 закоментувати для варіанту "додати аватар"
+                }}
+              />
+            </View>
+            <Text style={styles.regFormTitle}>реєстрація</Text>
 
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.inputsContainer}>
               {/* О. Собчук: сенс KeyboardAvoidingView в тому, щоб було видно інпут при фокусі */}
               <KeyboardAvoidingView
@@ -151,7 +154,9 @@ export const RegistrationScreen = () => {
                     <TextInput
                       name="password"
                       placeholder="Пароль"
-                      secureTextEntry
+                      // =======================
+                      secureTextEntry={showPassword}
+                      // ========================
                       value={password}
                       onChangeText={handlPassword}
                       style={{
@@ -166,13 +171,14 @@ export const RegistrationScreen = () => {
                         setFocusedInput(null);
                       }}
                     ></TextInput>
-
                     <Pressable
                       title=""
                       onPress={handleShowPassword}
                       style={styles.textShowWraper}
                     >
-                      <Text style={styles.textShow}>Показати</Text>
+                      <Text style={styles.textShow}>
+                        {showPassword ? 'Показати' : 'Сховати'}
+                      </Text>
                     </Pressable>
                   </View>
                 </View>
@@ -182,18 +188,18 @@ export const RegistrationScreen = () => {
                 </Pressable>
               </KeyboardAvoidingView>
             </View>
-          </TouchableWithoutFeedback>
 
-          <Pressable
-            title=""
-            // onPress={onLogin}
-            style={styles.textEnterWraper}
-          >
-            <Text style={styles.textEnter}>Вже є акаунт? Увійти</Text>
-          </Pressable>
-        </View>
-      </ImageBackground>
-    </View>
+            <Pressable
+              title=""
+              // onPress={onLogin}
+              style={styles.textEnterWraper}
+            >
+              <Text style={styles.textEnter}>Вже є акаунт? Увійти</Text>
+            </Pressable>
+          </View>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
