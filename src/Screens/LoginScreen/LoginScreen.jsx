@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
@@ -23,6 +24,7 @@ const INIT_STATE = {
 
 export const LoginScreen = () => {
   const relativePathImages = '../../../assets/images/';
+  const { navigate } = useNavigation();
 
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
@@ -130,7 +132,11 @@ export const LoginScreen = () => {
                   </View>
                 </View>
 
-                <Pressable title="" onPress={onLogin} style={styles.button}>
+                <Pressable
+                  title=""
+                  onPress={() => navigate('HomeScreen')}
+                  style={styles.button}
+                >
                   <Text style={styles.textButton}>Увійти</Text>
                 </Pressable>
               </KeyboardAvoidingView>
@@ -138,7 +144,7 @@ export const LoginScreen = () => {
 
             <Pressable
               title=""
-              // onPress={onLogin}
+              onPress={() => navigate('RegistrationScreen')}
               style={styles.textEnterWraper}
             >
               <Text style={styles.textEnter}>
