@@ -56,9 +56,8 @@ export const LoginScreen = () => {
       alert('Fill in all fields');
       return;
     }
-    console.debug('Credentials:', `email: ${email}, password: ${password}`);
-    Alert.alert('Credentials:', `email: ${email}, password: ${password}`);
-
+    // console.debug('Credentials:', `email: ${email}, password: ${password}`);
+    navigate('HomeScreen');
     setEmail('');
     setPassword('');
     setShowPassword(false);
@@ -89,24 +88,6 @@ export const LoginScreen = () => {
                     onChangeText={setEmail}
                     keyboardType="email-address"
                   />
-                  {/* <TextInput
-                    name="email"
-                    placeholder="Адреса електронної пошти"
-                    value={email}
-                    onChangeText={handleEmail}
-                    keyboardType="email-address"
-                    style={{
-                      ...styles.input,
-                      borderColor:
-                        focusedInput === 'email' ? '#FF6C00' : '#E8E8E8',
-                    }}
-                    onFocus={() => {
-                      setFocusedInput('email');
-                    }}
-                    onBlur={() => {
-                      setFocusedInput(null);
-                    }}
-                  /> */}
 
                   <View style={styles.passwordWraper}>
                     <InputComponent
@@ -118,26 +99,6 @@ export const LoginScreen = () => {
                       secureTextEntry={showPassword}
                       // ========================
                     />
-                    {/* <TextInput
-                      name="password"
-                      placeholder="Пароль"
-                      value={password}
-                      onChangeText={handlePassword}
-                      // =======================
-                      secureTextEntry={showPassword}
-                      // ========================
-                      style={{
-                        ...styles.input,
-                        borderColor:
-                          focusedInput === 'password' ? '#FF6C00' : '#E8E8E8',
-                      }}
-                      onFocus={() => {
-                        setFocusedInput('password');
-                      }}
-                      onBlur={() => {
-                        setFocusedInput(null);
-                      }}
-                    ></TextInput> */}
 
                     <Pressable
                       title=""
@@ -154,22 +115,22 @@ export const LoginScreen = () => {
                 <TouchableOpacity
                   title="Увійти"
                   style={styles.button}
-                  onPress={() => navigate('HomeScreen')}
+                  onPress={onLogin}
                 >
                   <Text style={styles.textButton}>Увійти</Text>
                 </TouchableOpacity>
               </KeyboardAvoidingView>
             </View>
 
-            <Pressable
-              title=""
-              onPress={() => navigate('RegistrationScreen')}
-              style={styles.textEnterWraper}
-            >
-              <Text style={styles.textEnter}>
-                Немає акаунту? Зареєструватися
-              </Text>
-            </Pressable>
+            <View style={styles.textEnterWraper}>
+              <Text style={styles.textEnter}>Немає акаунту?</Text>
+              <TouchableOpacity
+                title="Зареєструватися"
+                onPress={() => navigate('RegistrationScreen')}
+              >
+                <Text style={styles.textEnter}>Зареєструватися</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ImageBackground>
       </View>
@@ -313,9 +274,17 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 
-  textEnterWraper: { marginTop: 16 },
+  textEnterWraper: {
+    marginTop: 16,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+  },
 
   textEnter: {
+    margin: 0,
+    padding: 0,
     fontFamily: 'Roboto',
     fontStyle: 'normal',
     fontWeight: 400,
@@ -323,7 +292,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     /* identical to box height */
 
-    textAlign: 'center',
+    // textAlign: 'center',
 
     color: '#1B4371',
   },
