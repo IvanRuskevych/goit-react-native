@@ -14,6 +14,8 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { InputComponent } from '../../components/InputComponent/InputComponent';
 
 const INIT_STATE = {
   email: '',
@@ -34,6 +36,7 @@ export const LoginScreen = () => {
   const handleEmail = (text) => {
     setEmail(text);
   };
+
   const handlePassword = (text) => {
     setPassword(text);
   };
@@ -72,14 +75,21 @@ export const LoginScreen = () => {
         >
           <View style={styles.regFormContainer}>
             {/* registrationAvatarWrapper */}
-            <Text style={styles.regFormTitle}>увійти</Text>
+            <Text style={styles.regFormTitle}>Увійти</Text>
 
             <View style={styles.inputsContainer}>
               <KeyboardAvoidingView
                 behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
               >
                 <View style={styles.inputsWraper}>
-                  <TextInput
+                  <InputComponent
+                    name="email"
+                    placeholder="Адреса електронної пошти"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                  />
+                  {/* <TextInput
                     name="email"
                     placeholder="Адреса електронної пошти"
                     value={email}
@@ -96,10 +106,19 @@ export const LoginScreen = () => {
                     onBlur={() => {
                       setFocusedInput(null);
                     }}
-                  />
+                  /> */}
 
                   <View style={styles.passwordWraper}>
-                    <TextInput
+                    <InputComponent
+                      name="password"
+                      placeholder="Пароль"
+                      value={password}
+                      onChangeText={handlePassword}
+                      // =======================
+                      secureTextEntry={showPassword}
+                      // ========================
+                    />
+                    {/* <TextInput
                       name="password"
                       placeholder="Пароль"
                       value={password}
@@ -118,7 +137,7 @@ export const LoginScreen = () => {
                       onBlur={() => {
                         setFocusedInput(null);
                       }}
-                    ></TextInput>
+                    ></TextInput> */}
 
                     <Pressable
                       title=""
@@ -132,13 +151,13 @@ export const LoginScreen = () => {
                   </View>
                 </View>
 
-                <Pressable
-                  title=""
-                  onPress={() => navigate('HomeScreen')}
+                <TouchableOpacity
+                  title="Увійти"
                   style={styles.button}
+                  onPress={() => navigate('HomeScreen')}
                 >
                   <Text style={styles.textButton}>Увійти</Text>
-                </Pressable>
+                </TouchableOpacity>
               </KeyboardAvoidingView>
             </View>
 
@@ -216,31 +235,31 @@ const styles = StyleSheet.create({
     rowGap: 16,
   },
 
-  input: {
-    paddingLeft: 16,
+  // input: {
+  //   paddingLeft: 16,
 
-    height: 50,
+  //   height: 50,
 
-    /* Gray/01 */
-    backgroundColor: '#F6F6F6',
-    // backgroundColor: 'blue',
+  //   /* Gray/01 */
+  //   backgroundColor: '#F6F6F6',
+  //   // backgroundColor: 'blue',
 
-    /* Gray/02 */
-    borderWidth: 1,
-    borderColor: '#E8E8E8',
-    borderRadius: 8,
+  //   /* Gray/02 */
+  //   borderWidth: 1,
+  //   borderColor: '#E8E8E8',
+  //   borderRadius: 8,
 
-    fontFamily: 'Roboto',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-    fontSize: 16,
-    lineHeight: 19,
-    // /* identical to box height */
+  //   fontFamily: 'Roboto',
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  //   fontSize: 16,
+  //   lineHeight: 19,
+  //   // /* identical to box height */
 
-    // /* Gray/03 */
-    color: '#212121',
-    textDecorationLine: 'none',
-  },
+  //   // /* Gray/03 */
+  //   color: '#212121',
+  //   textDecorationLine: 'none',
+  // },
 
   passwordWraper: {
     position: 'relative',
