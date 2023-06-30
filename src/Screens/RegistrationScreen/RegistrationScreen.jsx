@@ -15,6 +15,7 @@ import {
   View,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
 const INIT_STATE = {
   login: '',
@@ -25,6 +26,7 @@ const INIT_STATE = {
 };
 
 export const RegistrationScreen = () => {
+  const navigation = useNavigation();
   const [login, setLogin] = useState(INIT_STATE.login);
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
@@ -191,7 +193,7 @@ export const RegistrationScreen = () => {
 
             <Pressable
               title=""
-              // onPress={onLogin}
+              onPress={() => navigation.navigate('LoginScreen')}
               style={styles.textEnterWraper}
             >
               <Text style={styles.textEnter}>Вже є акаунт? Увійти</Text>
