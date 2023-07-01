@@ -3,7 +3,7 @@ import { TextInput } from 'react-native';
 
 import { styles } from './InputComponentStyles';
 
-export const InputComponent = (props) => {
+const InputComponent = (props) => {
   const [isFocused, setIsFocused] = useState(false);
   return (
     <TextInput
@@ -14,3 +14,5 @@ export const InputComponent = (props) => {
     />
   );
 };
+
+export default InputComponent;

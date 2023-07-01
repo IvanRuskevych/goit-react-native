@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
-  Alert,
   Dimensions,
   ImageBackground,
   Keyboard,
@@ -10,17 +9,15 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { InputComponent } from '../../components/InputComponent/InputComponent';
+import InputComponent from '../../components/InputComponent/InputComponent';
 
 const INIT_STATE = {
   email: '',
   password: '',
-  focusedInput: null,
   showPassword: false,
 };
 
@@ -30,16 +27,7 @@ export const LoginScreen = () => {
 
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
-  const [focusedInput, setFocusedInput] = useState(INIT_STATE.focusedInput);
   const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
-
-  const handleEmail = (text) => {
-    setEmail(text);
-  };
-
-  const handlePassword = (text) => {
-    setPassword(text);
-  };
 
   const handleShowPassword = () => {
     if (!password) {
@@ -94,7 +82,7 @@ export const LoginScreen = () => {
                       name="password"
                       placeholder="Пароль"
                       value={password}
-                      onChangeText={handlePassword}
+                      onChangeText={setPassword}
                       // =======================
                       secureTextEntry={showPassword}
                       // ========================
