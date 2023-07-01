@@ -5,6 +5,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import PostsScreen from '../PostsScreen/PostsScreen';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import CreatePostsScreen from '../CreatePostsScreen/CreatePostsScreen';
 
 function Settings() {
   return (
@@ -25,7 +26,7 @@ const screenOptionsNavigator = ({ route }) => ({
   tabBarIcon: ({ focused, color, size }) => {
     console.log('route', route);
     let iconName;
-    if (route.name === 'Posts') {
+    if (route.name === 'PostsScreen') {
       iconName = focused ? 'grid' : 'grid';
     }
     // else if (route.name === 'Settings') {
@@ -36,7 +37,8 @@ const screenOptionsNavigator = ({ route }) => ({
     return <Feather name={iconName} size={size} color={color} />;
   },
 });
-const optionsPosts = {
+
+const optionsPostsScreen = {
   headerRight: () => (
     <TouchableOpacity onPress={() => navigate('LoginScreen')}>
       <Feather name="log-out" size={24} color="#BDBDBD" />
@@ -49,8 +51,10 @@ export const HomeScreen = () => {
   return (
     <Tabs.Navigator screenOptions={screenOptionsNavigator}>
       <Tabs.Screen
+        name="PostsScreen"
+        component={PostsScreen}
         options={
-          (optionsPosts,
+          (optionsPostsScreen,
           {
             title: 'Публікації',
             headerTitleAlign: 'center',
@@ -66,10 +70,27 @@ export const HomeScreen = () => {
             },
           })
         }
-        name="Posts"
-        component={PostsScreen}
       />
-      <Tabs.Screen name="Settings" component={Settings} />
+      <Tabs.Screen
+        name="CreatePostsScreen"
+        component={CreatePostsScreen}
+        options={{
+          tabBarIcon: () => {
+            return (
+              <TouchableOpacity
+                style={styles.addButton}
+                activeOpacity={0.5}
+                onPress={() => navigate('CreatePostsScreen')}
+              >
+                <Text style={styles.addButtonText}>+</Text>
+              </TouchableOpacity>
+            );
+          },
+          headerShown: false,
+          tabBarStyle: { display: 'none' },
+          headerTitleAlign: 'center',
+        }}
+      />
     </Tabs.Navigator>
   );
 };
