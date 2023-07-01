@@ -6,6 +6,7 @@ import PostsScreen from '../PostsScreen/PostsScreen';
 import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import CreatePostsScreen from '../CreatePostsScreen/CreatePostsScreen';
+import ProfileScreen from '../ProfileScreen/ProfileScreen';
 
 function Settings() {
   return (
@@ -91,6 +92,7 @@ export const HomeScreen = () => {
           headerTitleAlign: 'center',
         }}
       />
+      <Tabs.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tabs.Navigator>
   );
 };
