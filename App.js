@@ -6,6 +6,7 @@ import { HomeScreen } from './src/Screens/Home/HomeScreen';
 import { LoginScreen } from './src/Screens/LoginScreen/LoginScreen';
 import { RegistrationScreen } from './src/Screens/RegistrationScreen/RegistrationScreen';
 import { Button } from 'react-native';
+import CreatePostsScreen from './src/Screens/CreatePostsScreen/CreatePostsScreen';
 
 export default function App() {
   const MainStack = createStackNavigator();
@@ -17,28 +18,11 @@ export default function App() {
           component={RegistrationScreen}
         />
         <MainStack.Screen name="LoginScreen" component={LoginScreen} />
+        <MainStack.Screen name="HomeScreen" component={HomeScreen} />
         <MainStack.Screen
-          name="HomeScreen"
-          component={HomeScreen}
-          options={{
-            title: 'Start screen',
-            // headerStyle: { backgroundColor: '#f4511e' },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 25,
-            },
-            headerRight: () => (
-              <Button
-                title="Press me"
-                color="blue"
-                onPress={() => alert('This is a button')}
-              />
-            ),
-          }}
+          name="CreatePostsScreen"
+          component={CreatePostsScreen}
         />
-        {/* <RegistrationScreen /> */}
-        {/* <LoginScreen /> */}
       </MainStack.Navigator>
     </NavigationContainer>
   );
