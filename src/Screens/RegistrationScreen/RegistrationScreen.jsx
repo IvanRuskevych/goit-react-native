@@ -31,7 +31,7 @@ export const RegistrationScreen = () => {
   const [password, setPassword] = useState(INIT_STATE.password);
   const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
 
-  const backgraundImage = require('../../../assets/images/bg-img.webp');
+  const backgroundImage = require('../../../assets/images/bg-img.webp');
   const avatar = require('../../../assets/images/user-photo.webp');
 
   const onLogin = () => {
@@ -67,7 +67,7 @@ export const RegistrationScreen = () => {
         <StatusBar style="auto" />
         <ImageBackground
           // source={{ uri: 'https://reactjs.org/logo-og.png' }}
-          source={backgraundImage}
+          source={backgroundImage}
           style={styles.bgImage}
         >
           <View style={styles.regFormContainer}>
