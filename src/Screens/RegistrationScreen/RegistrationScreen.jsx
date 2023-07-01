@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
-  Alert,
   Dimensions,
   Image,
   ImageBackground,
@@ -10,40 +9,27 @@ import {
   Pressable,
   StyleSheet,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import InputComponent from '../../components/InputComponent/InputComponent';
+import { TouchableOpacity } from 'react-native';
 
 const INIT_STATE = {
   login: '',
   email: '',
   password: '',
-  focusedInput: null,
   showPassword: false,
 };
 
 export const RegistrationScreen = () => {
-  const navigation = useNavigation();
+  const { navigate } = useNavigation();
   const [login, setLogin] = useState(INIT_STATE.login);
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
-  const [focusedInput, setFocusedInput] = useState(INIT_STATE.focusedInput);
   const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
-
-  const handlLogin = (text) => {
-    setLogin(text);
-  };
-
-  const handlEmail = (text) => {
-    setEmail(text);
-  };
-
-  const handlPassword = (text) => {
-    setPassword(text);
-  };
 
   const onLogin = () => {
     if (!login || !email || !password) {
@@ -55,11 +41,8 @@ export const RegistrationScreen = () => {
       'Credentials:',
       `login: ${login}, email: ${email}, password: ${password}`
     );
-    Alert.alert(
-      'Credentials:',
-      `login: ${login}, email: ${email}, password: ${password}`
-    );
 
+    navigate('HomeScreen');
     setLogin('');
     setEmail('');
     setPassword('');
@@ -116,63 +99,32 @@ export const RegistrationScreen = () => {
                 behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
               >
                 <View style={styles.inputsWraper}>
-                  <TextInput
+                  <InputComponent
                     name="login"
                     placeholder="Логін"
                     value={login}
-                    onChangeText={handlLogin}
-                    style={{
-                      ...styles.input,
-                      borderColor:
-                        focusedInput === 'login' ? '#FF6C00' : '#E8E8E8',
-                    }}
-                    onFocus={() => {
-                      setFocusedInput('login');
-                    }}
-                    onBlur={() => {
-                      setFocusedInput(null);
-                    }}
+                    onChangeText={setLogin}
                   />
-                  <TextInput
+
+                  <InputComponent
                     name="email"
                     placeholder="Адреса електронної пошти"
                     value={email}
-                    onChangeText={handlEmail}
+                    onChangeText={setEmail}
                     keyboardType="email-address"
-                    style={{
-                      ...styles.input,
-                      borderColor:
-                        focusedInput === 'email' ? '#FF6C00' : '#E8E8E8',
-                    }}
-                    onFocus={() => {
-                      setFocusedInput('email');
-                    }}
-                    onBlur={() => {
-                      setFocusedInput(null);
-                    }}
                   />
 
                   <View>
-                    <TextInput
+                    <InputComponent
                       name="password"
                       placeholder="Пароль"
                       // =======================
                       secureTextEntry={showPassword}
                       // ========================
                       value={password}
-                      onChangeText={handlPassword}
-                      style={{
-                        ...styles.input,
-                        borderColor:
-                          focusedInput === 'password' ? '#FF6C00' : '#E8E8E8',
-                      }}
-                      onFocus={() => {
-                        setFocusedInput('password');
-                      }}
-                      onBlur={() => {
-                        setFocusedInput(null);
-                      }}
-                    ></TextInput>
+                      onChangeText={setPassword}
+                    />
+
                     <Pressable
                       title=""
                       onPress={handleShowPassword}
@@ -191,13 +143,15 @@ export const RegistrationScreen = () => {
               </KeyboardAvoidingView>
             </View>
 
-            <Pressable
-              title=""
-              onPress={() => navigation.navigate('LoginScreen')}
-              style={styles.textEnterWraper}
-            >
-              <Text style={styles.textEnter}>Вже є акаунт? Увійти</Text>
-            </Pressable>
+            <View style={styles.textEnterWraper}>
+              <Text style={styles.textEnter}>Вже є акаунт?</Text>
+              <TouchableOpacity
+                title="Увійти"
+                onPress={() => navigate('LoginScreen')}
+              >
+                <Text style={styles.textEnter}>Увійти</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </ImageBackground>
       </View>
@@ -394,9 +348,17 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
   },
 
-  textEnterWraper: { marginTop: 16 },
+  textEnterWraper: {
+    marginTop: 16,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    justifyContent: 'center',
+  },
 
   textEnter: {
+    margin: 0,
+    padding: 0,
     fontFamily: 'Roboto',
     fontStyle: 'normal',
     fontWeight: 400,
@@ -404,7 +366,7 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     /* identical to box height */
 
-    textAlign: 'center',
+    // textAlign: 'center',
 
     color: '#1B4371',
   },
