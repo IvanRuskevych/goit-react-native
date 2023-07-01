@@ -31,6 +31,9 @@ export const RegistrationScreen = () => {
   const [password, setPassword] = useState(INIT_STATE.password);
   const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
 
+  const backgraundImage = require('../../../assets/images/bg-img.webp');
+  const avatar = require('../../../assets/images/user-photo.webp');
+
   const onLogin = () => {
     if (!login || !email || !password) {
       console.debug('Fill in all fields');
@@ -58,15 +61,13 @@ export const RegistrationScreen = () => {
     setShowPassword(!showPassword);
   };
 
-  const relativePathImages = '../../../assets/images/';
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={styles.bgImageContainer}>
         <StatusBar style="auto" />
         <ImageBackground
           // source={{ uri: 'https://reactjs.org/logo-og.png' }}
-          source={require(`${relativePathImages}bg-img.webp`)}
+          source={backgraundImage}
           style={styles.bgImage}
         >
           <View style={styles.regFormContainer}>
@@ -78,10 +79,7 @@ export const RegistrationScreen = () => {
               }}
             >
               {/* step 2/3 закоментувати Image для варіанту "додати аватар" */}
-              <Image
-                source={require(`${relativePathImages}user-photo.webp`)}
-                style={styles.avatar}
-              />
+              <Image source={avatar} style={styles.avatar} />
               <AntDesign
                 name="pluscircleo"
                 size={25}
