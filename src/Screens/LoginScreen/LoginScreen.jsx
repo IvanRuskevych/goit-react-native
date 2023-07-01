@@ -22,7 +22,7 @@ const INIT_STATE = {
 };
 
 export const LoginScreen = () => {
-  const relativePathImages = '../../../assets/images/';
+  const backgraundImage = require('../../../assets/images/bg-img.webp');
   const { navigate } = useNavigation();
 
   const [email, setEmail] = useState(INIT_STATE.email);
@@ -41,7 +41,7 @@ export const LoginScreen = () => {
 
   const onLogin = () => {
     if (!email || !password) {
-      alert('Fill in all fields');
+      alert('Please fill in all fields');
       return;
     }
     // console.debug('Credentials:', `email: ${email}, password: ${password}`);
@@ -57,7 +57,7 @@ export const LoginScreen = () => {
         <StatusBar style="auto" />
         <ImageBackground
           // source={{ uri: 'https://reactjs.org/logo-og.png' }}
-          source={require(`${relativePathImages}bg-img.webp`)}
+          source={backgraundImage}
           style={styles.bgImage}
         >
           <View style={styles.regFormContainer}>

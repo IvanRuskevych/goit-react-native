@@ -22,7 +22,7 @@ export default function App() {
           component={HomeScreen}
           options={{
             title: 'Start screen',
-            headerStyle: { backgroundColor: '#f4511e' },
+            // headerStyle: { backgroundColor: '#f4511e' },
             headerTintColor: '#fff',
             headerTitleStyle: {
               fontWeight: 'bold',
