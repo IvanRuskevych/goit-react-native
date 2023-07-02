@@ -1,10 +1,8 @@
-import { Feather, Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import PostsScreen from '../PostsScreen/PostsScreen';
-import { TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Pressable, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
+import PostsScreen from '../PostsScreen/PostsScreen';
 import CreatePostsScreen from '../CreatePostsScreen/CreatePostsScreen';
 import ProfileScreen from '../ProfileScreen/ProfileScreen';
 
@@ -35,18 +33,11 @@ const optionsNavigator = ({ route }) => ({
     }
     return <Feather name={iconName} size={size} color={color} />;
   },
-  // headerRight: () => (
-  //   <Pressable
-  //     onPress={() => navigate('LoginScreen')}
-  //     style={{ marginRight: 16 }}
-  //   >
-  //     <Feather name="log-out" size={24} color="#BDBDBD" />
-  //   </Pressable>
-  // ),
 });
 
 export const HomeScreen = () => {
   const { navigate } = useNavigation();
+
   const optionsPostsScreen = {
     headerRight: () => (
       <TouchableOpacity
@@ -59,24 +50,21 @@ export const HomeScreen = () => {
   };
 
   const optionsCreatePostsScreen = {
-    tabBarIcon: () => (
-      <TouchableOpacity
-        style={styles.plusIcon}
-        onPress={() => navigate('CreatePostsScreen')}
-      >
+    tabBarIcon: ({ focused, size, color }) => (
+      <View style={styles.plusIcon}>
         <Feather name="plus" size={24} color="#FFFFFF" />
-      </TouchableOpacity>
+      </View>
     ),
 
-    // headerLeft: () => (
-    //   <Pressable
-    //     onPress={() => navigate('Публікації')}
-    //     style={{ marginLeft: 16 }}
-    //   >
-    //     <Feather name="arrow-left" size={24} color="#212121CC" />
-    //   </Pressable>
-    // ),
-    // tabBarStyle: { display: 'none' },
+    headerLeft: () => (
+      <Pressable
+        onPress={() => navigate('Публікації')}
+        style={{ marginLeft: 16 }}
+      >
+        <Feather name="arrow-left" size={24} color="#212121CC" />
+      </Pressable>
+    ),
+    tabBarStyle: { display: 'none' },
   };
 
   return (
@@ -90,12 +78,13 @@ export const HomeScreen = () => {
         component={PostsScreen}
         options={optionsPostsScreen}
       />
+
       <Tabs.Screen
-        // name="CreatePostsScreen"
         name="Створити публікацію"
         component={CreatePostsScreen}
         options={optionsCreatePostsScreen}
       />
+
       <Tabs.Screen
         name="ProfileScreen"
         component={ProfileScreen}
@@ -108,12 +97,6 @@ export const HomeScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
   header: {
     height: 88,
     borderBottomWidth: 1,
