@@ -67,6 +67,16 @@ export const HomeScreen = () => {
         <Feather name="plus" size={24} color="#FFFFFF" />
       </TouchableOpacity>
     ),
+
+    // headerLeft: () => (
+    //   <Pressable
+    //     onPress={() => navigate('Публікації')}
+    //     style={{ marginLeft: 16 }}
+    //   >
+    //     <Feather name="arrow-left" size={24} color="#212121CC" />
+    //   </Pressable>
+    // ),
+    // tabBarStyle: { display: 'none' },
   };
 
   return (
