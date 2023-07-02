@@ -16,12 +16,30 @@ export default function App() {
         <MainStack.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}
+          options={{
+            headerShown: false,
+          }}
         />
-        <MainStack.Screen name="LoginScreen" component={LoginScreen} />
-        <MainStack.Screen name="HomeScreen" component={HomeScreen} />
+        <MainStack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <MainStack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
         <MainStack.Screen
           name="CreatePostsScreen"
           component={CreatePostsScreen}
+          options={{
+            headerShown: false,
+          }}
         />
       </MainStack.Navigator>
     </NavigationContainer>

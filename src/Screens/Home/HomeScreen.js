@@ -70,7 +70,8 @@ export const HomeScreen = () => {
         options={optionsPostsScreen}
       />
       <Tabs.Screen
-        name="CreatePostsScreen"
+        // name="CreatePostsScreen"
+        name="Створити публікацію"
         component={CreatePostsScreen}
         options={{
           tabBarIcon: () => {
