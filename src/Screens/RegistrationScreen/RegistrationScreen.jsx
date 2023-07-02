@@ -31,7 +31,6 @@ export const RegistrationScreen = () => {
   const [hidePassword, setHidePassword] = useState(INIT_STATE.hidePassword);
 
   const backgroundImage = require('../../../images/bg-img.webp');
-  const avatar = require('../../../images/user-photo.webp');
 
   const onLogin = () => {
     if (!login || !email || !password) {

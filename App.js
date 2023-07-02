@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './src/Screens/Home/HomeScreen';
 import { LoginScreen } from './src/Screens/LoginScreen/LoginScreen';
 import { RegistrationScreen } from './src/Screens/RegistrationScreen/RegistrationScreen';
-import CreatePostsScreen from './src/Screens/CreatePostsScreen/CreatePostsScreen';
+// import CreatePostsScreen from './src/Screens/CreatePostsScreen/CreatePostsScreen';
 
 export default function App() {
   const MainStack = createStackNavigator();
@@ -32,10 +32,6 @@ export default function App() {
           options={{
             headerShown: false,
           }}
-        />
-        <MainStack.Screen
-          name="CreatePostsScreen"
-          component={CreatePostsScreen}
         />
       </MainStack.Navigator>
     </NavigationContainer>
