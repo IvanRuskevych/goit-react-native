@@ -22,7 +22,7 @@ const INIT_STATE = {
 };
 
 export const LoginScreen = () => {
-  const backgraundImage = require('../../../assets/images/bg-img.webp');
+  const backgraundImage = require('../../../images/bg-img.webp');
   const { navigate } = useNavigation();
 
   const [email, setEmail] = useState(INIT_STATE.email);

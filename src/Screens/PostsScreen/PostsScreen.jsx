@@ -1,59 +1,44 @@
-import { View, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
-import React from 'react';
-import Profile from '../../components/Profile/Profile';
-import Post from '../../components/Post/Post';
+import { Text, Image, View, StyleSheet } from 'react-native';
 
-const data = [
-  {
-    id: '1',
-    name: 'Forest',
-    location: "Ivano-Frankivs'k Region, Ukraine",
-    messages: 10,
-  },
-  {
-    id: '2',
-    name: 'Black Sea Sunset',
-    location: 'Ukraine',
-    messages: 20,
-  },
-  {
-    id: '3',
-    name: 'Venecia old house',
-    location: 'Italy',
-    messages: 30,
-  },
-];
+const avatar = require('../../../images/user-photo.webp');
 
-const avatar = require('../../../assets/images/user-photo.webp');
-const postImage = require('../../../assets/images/Forest.png');
-
-const PostsScreen = () => {
+export default function PostsScreen() {
   return (
-    <SafeAreaView
-      style={{
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        overflow: 'visible',
-      }}
-    >
-      <ScrollView>
-        <Profile
-          avatar={avatar}
-          name="Natali Romanova"
-          email="email@example.com"
-        />
-        {data.map((element) => (
-          <Post
-            key={element.id}
-            img={postImage}
-            text={element.name}
-            messages={element.messages}
-            location={element.location}
-          />
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <View style={styles.userWrapper}>
+        <Image source={avatar} />
+        <View style={styles.userInfo}>
+          <Text style={styles.userName}>Natali Romanova PostScreen</Text>
+          <Text style={styles.userEmail}>email@example.com</Text>
+        </View>
+      </View>
+    </View>
   );
-};
-
-export default PostsScreen;
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 32,
+    backgroundColor: '#fff',
+  },
+  userWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userInfo: {
+    marginLeft: 8,
+  },
+  userName: {
+    fontFamily: 'Roboto',
+    color: '#212121',
+    fontSize: 13,
+    lineHeight: 15,
+  },
+  userEmail: {
+    fontFamily: 'Roboto',
+    color: '#212121CC',
+    fontSize: 11,
+    lineHeight: 13,
+  },
+});

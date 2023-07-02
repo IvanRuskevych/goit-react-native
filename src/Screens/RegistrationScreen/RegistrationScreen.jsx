@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
   Dimensions,
-  Image,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,
@@ -31,8 +30,8 @@ export const RegistrationScreen = () => {
   const [password, setPassword] = useState(INIT_STATE.password);
   const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
 
-  const backgroundImage = require('../../../assets/images/bg-img.webp');
-  const avatar = require('../../../assets/images/user-photo.webp');
+  const backgroundImage = require('../../../images/bg-img.webp');
+  const avatar = require('../../../images/user-photo.webp');
 
   const onLogin = () => {
     if (!login || !email || !password) {
@@ -75,17 +74,17 @@ export const RegistrationScreen = () => {
             <View
               style={{
                 ...styles.registrationAddAvatarWrapper,
-                ...styles.registrationDelAvatarWrapper, // step 1/3 закоментувати для варіанту "додати аватар"
+                // ...styles.registrationDelAvatarWrapper, // step 1/3 закоментувати для варіанту "додати аватар"
               }}
             >
               {/* step 2/3 закоментувати Image для варіанту "додати аватар" */}
-              <Image source={avatar} style={styles.avatar} />
+              {/* <Image source={avatar} style={styles.avatar} /> */}
               <AntDesign
                 name="pluscircleo"
                 size={25}
                 style={{
                   ...styles.iconAddAvatar,
-                  ...styles.iconDelAvatar, // step 3/3 закоментувати для варіанту "додати аватар"
+                  // ...styles.iconDelAvatar, // step 3/3 закоментувати для варіанту "додати аватар"
                 }}
               />
             </View>

@@ -1,213 +1,143 @@
 import {
-  View,
   Text,
+  Image,
+  View,
   StyleSheet,
-  TouchableOpacity,
-  ImageBackground,
-  SafeAreaView,
-  ScrollView,
+  Pressable,
+  Dimensions,
 } from 'react-native';
-import React from 'react';
 import { Feather, AntDesign } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Post from '../../components/Post/Post';
-// import data from "../../Source/PostsData";
-// import Post from "../../Elements/Post/Post";
 
-const backgroundImage = require('../../../assets/images/bg-img.webp');
-const avatar = require('../../../assets/images/user-photo.webp');
-const postImage = require('../../../assets/images/Forest.png');
+const backgroundImage = require('../../../images/bg-img.webp');
+const avatar = require('../../../images/user-photo.webp');
 
-// const BottomTabsProf = createBottomTabNavigator();
-
-const data = [
-  {
-    id: '1',
-    name: 'Forest',
-    location: "Ivano-Frankivs'k Region, Ukraine",
-    messages: 10,
-  },
-  {
-    id: '2',
-    name: 'Black Sea Sunset',
-    location: 'Ukraine',
-    messages: 20,
-  },
-  {
-    id: '3',
-    name: 'Venecia old house',
-    location: 'Italy',
-    messages: 30,
-  },
-];
-
-const ProfileScreen = ({ navigation }) => {
+export default function ProfileScreen({ navigation }) {
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <ImageBackground
-          source={backgroundImage}
-          style={styles.imageBackground}
+    <View style={styles.container}>
+      <Image source={backgroundImage} style={styles.backgroundImage} />
+      <View style={styles.contentWrapper}>
+        <View
+          style={{
+            ...styles.registrationAddAvatarWrapper,
+            ...styles.registrationDelAvatarWrapper, // step 1/3 закоментувати для варіанту "додати аватар"
+          }}
         >
-          <View style={styles.mainContainer}>
-            <View style={styles.container}>
-              <View style={styles.photoContainer}>
-                <ImageBackground
-                  source={avatar}
-                  style={{ width: '100%', height: '100%' }}
-                ></ImageBackground>
-                <TouchableOpacity style={styles.addButton} activeOpacity={0.5}>
-                  <AntDesign name="pluscircleo" size={24} color="#FF6C00" />
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity
-                style={styles.logoutButton}
-                activeOpacity={0.5}
-                onPress={() =>
-                  navigation.navigate('HomeScreen', { screen: 'PostsScreen' })
-                }
-              >
-                <Feather name="log-out" size={24} color="gray" />
-              </TouchableOpacity>
-              <Text style={styles.title}>Natali Romanova</Text>
-              {data.map((element) => (
-                <Post
-                  key={element.id}
-                  img={postImage}
-                  text={element.name}
-                  messages={element.messages}
-                  location={element.location}
-                />
-              ))}
-            </View>
-          </View>
-        </ImageBackground>
-      </ScrollView>
-    </SafeAreaView>
+          {/* step 2/3 закоментувати Image для варіанту "додати аватар" */}
+          <Image source={avatar} style={styles.avatar} />
+          <AntDesign
+            name="pluscircleo"
+            size={25}
+            style={{
+              ...styles.iconAddAvatar,
+              ...styles.iconDelAvatar, // step 3/3 закоментувати для варіанту "додати аватар"
+            }}
+          />
+        </View>
+
+        <Pressable
+          onPress={() => navigation.navigate('LoginScreen')}
+          style={styles.logOutButton}
+        >
+          <Feather name="log-out" size={24} color="#BDBDBD" />
+        </Pressable>
+        <Text style={styles.userName}>Natali Romanova</Text>
+      </View>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  imageBackground: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    width: '100%',
-  },
-  //   scrollContainer: {
-  //     justifyContent: "flex-start",
-  //     alignItems: "center",
-  //     width: "100%",
-  //     backgroundColor: "#FFFFFF",
-  //     borderTopRightRadius: 25,
-  //     borderTopLeftRadius: 25,
-  //   },
-  logoutButton: {
-    marginLeft: 350,
-    marginTop: -40,
-  },
   container: {
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    width: '100%',
-    borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
-    marginTop: 200,
+    paddingTop: 120,
   },
-  //   containerKeyB: {
-  //     justifyContent: "flex-end",
-  //   },
-  photoContainer: {
-    marginTop: -60,
-    height: 120,
+  backgroundImage: {
+    position: 'absolute',
+    width: 411,
+    zIndex: -1,
+  },
+  avatar: {
+    position: 'absolute',
+    top: -60,
+    left: Dimensions.get('window').width / 2 - 60,
+  },
+
+  registrationAddAvatarWrapper: {
+    position: 'absolute',
+    top: -60,
+    left: Dimensions.get('window').width / 2 - 60,
+
     width: 120,
-    backgroundColor: '#F6F6F6',
+    height: 120,
+
     borderRadius: 16,
-    overflow: 'visible',
+
+    backgroundColor: '#F6F6F6',
+
+    // border: 1px solid #000000;
+    borderWidth: 1,
+    borderStyle: 'solid',
+    borderColor: '#000',
+    // borderColor: 'red',
+
+    shadowColor: 'rgba(0, 0, 0, 1.0)',
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.34,
+    shadowRadius: 4,
+    elevation: 10,
   },
 
-  addButton: {
-    marginTop: -40,
-    left: '90%',
-    height: 25,
-    width: 25,
-    pointerEvents: 'auto',
+  registrationDelAvatarWrapper: {
+    position: 'absolute',
+    top: -60,
+    left: Dimensions.get('window').width / 2 - 60,
+
+    width: 120,
+    height: 120,
+
+    borderRadius: 16,
+    backgroundColor: '#F6F6F6',
   },
-  //   addButton: {
-  //     backgroundColor: "#FF6C00",
-  //     height: 40,
-  //     width: 70,
-  //     justifyContent: "center",
-  //     alignItems: "center",
-  //     borderRadius: 20,
-  //   },
-  title: {
-    fontWeight: '500',
+
+  avatar: {
+    borderRadius: 16,
+  },
+
+  iconAddAvatar: {
+    position: 'absolute',
+    right: -(25 / 2),
+    bottom: 16,
+
+    backgroundColor: '#FFFFFF',
+    borderRadius: 50,
+
+    color: '#FF6C00',
+  },
+
+  iconDelAvatar: {
+    color: '#BDBDBD',
+    transform: [{ rotateZ: '45deg' }],
+  },
+
+  userName: {
+    fontFamily: 'Roboto',
+    color: '#212121',
+    fontWeight: 500,
     fontSize: 30,
-    marginTop: 32,
     lineHeight: 35,
+    textAlign: 'center',
+    marginTop: 32,
   },
-  //   inputLogin: {
-  //     backgroundColor: "#F6F6F6",
-  //     width: 343,
-  //     height: 50,
-  //     borderRadius: 8,
-  //     marginTop: 33,
-  //     padding: 16,
-  //     fontStyle: "normal",
-  //     fontWeight: "400",
-  //     fontSize: 16,
-  //     lineHeight: 19,
-  //   },
-  //   inputMailPassw: {
-  //     backgroundColor: "#F6F6F6",
-  //     width: 343,
-  //     height: 50,
-  //     borderRadius: 8,
-  //     padding: 16,
-  //     marginTop: 16,
-  //     fontStyle: "normal",
-  //     fontWeight: "400",
-  //     fontSize: 16,
-  //     position: "relative",
-  //   },
-  //   passwShowText: {
-  //     fontStyle: "normal",
-  //     fontWeight: "400",
-  //     fontSize: 16,
-  //     lineHeight: 19,
-  //   },
-  //   passwShow: {
-  //     top: -34,
-  //     left: 130,
-  //   },
-  //   registerButton: {
-  //     backgroundColor: "#FF6C00",
-  //     height: 50,
-  //     width: 343,
-  //     justifyContent: "center",
-  //     alignItems: "center",
-  //     borderRadius: 100,
-  //     marginTop: 44,
-  //   },
-  //   registerButtonText: {
-  //     color: "#fff",
-  //     fontWeight: "400",
-  //   },
-  //   loginLink: {
-  //     marginTop: 16,
-  //     marginBottom: 66,
-  //   },
-  //   loginLinkText: {
-  //     fontStyle: "normal",
-  //     fontWeight: "400",
-  //     fontSize: 16,
-  //     lineHeight: 19,
-  //   },
+  contentWrapper: {
+    backgroundColor: '#fff',
+    width: '100%',
+    height: '100%',
+    paddingHorizontal: 16,
+  },
+  logOutButton: {
+    marginLeft: 'auto',
+    marginTop: 22,
+  },
 });
-
-export default ProfileScreen;

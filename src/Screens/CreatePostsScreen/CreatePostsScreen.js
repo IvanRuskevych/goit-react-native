@@ -1,150 +1,185 @@
+import React, { useState } from 'react';
 import {
-  View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  View,
   TextInput,
-  ImageBackground,
+  TouchableWithoutFeedback,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
 } from 'react-native';
-import React from 'react';
-import { EvilIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { CreatePost } from '../../components/CreatePosts/CreatePosts';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 
-const BottomTabs = createBottomTabNavigator();
+export default function CreatePostsScreen() {
+  const [name, setName] = useState('');
+  const [location, setLocation] = useState('');
 
-const CreatePost = () => {
+  const [isShowKeyboard, setIsShowKeyboard] = useState(false);
+  const [isNameFocus, setIsNameFocus] = useState(false);
+  const [isLocationFocus, setIsLocationFocus] = useState(false);
+
+  const keyboardHide = () => {
+    setIsShowKeyboard(false);
+    Keyboard.dismiss();
+  };
+
   return (
-    <View style={styles.postContainer}>
-      <View style={styles.postImage}>
-        <TouchableOpacity style={styles.postImageAdd} activeOpacity={0.5}>
-          <FontAwesome name="camera" size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.postImageText}>Завантажте фото</Text>
-      <View style={styles.postForm}>
-        <TextInput
-          style={styles.postName}
-          placeholder="Назва..."
-          inputMode="text"
-        />
-        <TextInput
-          style={styles.postName}
-          placeholder="Місцевість..."
-          inputMode="navigation"
-        />
-        <TouchableOpacity style={styles.postButton} activeOpacity={0.5}>
-          <Text style={styles.postButtonText}>Опубліковати</Text>
-        </TouchableOpacity>
-      </View>
+    <View style={styles.container}>
+      <TouchableWithoutFeedback onPress={keyboardHide}>
+        <View>
+          <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
+            {!isShowKeyboard && (
+              <View>
+                <View style={styles.imageBackground}>
+                  <View style={styles.photoIconWrap}>
+                    <MaterialIcons
+                      name="photo-camera"
+                      size={24}
+                      color="#BDBDBD"
+                    />
+                  </View>
+                </View>
+                <Text style={styles.text}>Завантажте фото</Text>
+              </View>
+            )}
+
+            <TextInput
+              value={name}
+              onChangeText={(value) => setName(value)}
+              placeholder="Назва..."
+              placeholderTextColor={'#BDBDBD'}
+              onFocus={() => {
+                setIsShowKeyboard(true);
+                setIsNameFocus(true);
+              }}
+              onBlur={() => setIsNameFocus(false)}
+              style={{
+                ...styles.input,
+                borderBottomColor: isNameFocus ? '#ff6c00' : '#e8e8e8',
+                marginTop: 30,
+              }}
+            />
+            <View>
+              <Feather
+                name="map-pin"
+                size={24}
+                color="black"
+                style={{
+                  ...styles.locationIcon,
+                  color: isLocationFocus ? '#ff6c00' : '#BDBDBD',
+                }}
+              />
+              <TextInput
+                value={location}
+                onChangeText={(value) => setLocation(value)}
+                placeholder="Місцевість..."
+                placeholderTextColor={'#BDBDBD'}
+                onFocus={() => {
+                  setIsShowKeyboard(true);
+                  setIsLocationFocus(true);
+                }}
+                onBlur={() => setIsLocationFocus(false)}
+                style={{
+                  ...styles.input,
+                  borderBottomColor: isLocationFocus ? '#ff6c00' : '#e8e8e8',
+                  marginTop: 30,
+                  paddingLeft: 25,
+                }}
+              />
+            </View>
+            <Pressable style={styles.button}>
+              <Text style={styles.buttonText}>Опубліковати</Text>
+            </Pressable>
+            <View style={styles.trashIconWrap}>
+              <Pressable style={styles.trashButton}>
+                <Feather name="trash-2" size={24} color="#BDBDBD" />
+              </Pressable>
+            </View>
+          </KeyboardAvoidingView>
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
-};
-
-const CreatePostsScreen = ({ navigation }) => {
-  return (
-    <BottomTabs.Navigator
-      screenOptions={{
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          height: 80,
-          borderBottomColor: '#E8E8E8',
-          borderBottomWidth: 2,
-        },
-      }}
-    >
-      <BottomTabs.Screen
-        options={{
-          tabBarIcon: () => {
-            return (
-              <TouchableOpacity style={styles.trashButton} activeOpacity={0.5}>
-                <EvilIcons name="trash" size={24} color="black" />
-              </TouchableOpacity>
-            );
-          },
-          headerLeft: () => (
-            <TouchableOpacity
-              style={styles.logoutButton}
-              activeOpacity={0.5}
-              onPress={() =>
-                navigation.navigate('HomeScreen', { screen: 'PostsScreen' })
-              }
-            >
-              <Ionicons name="arrow-back-sharp" size={24} color="black" />
-            </TouchableOpacity>
-          ),
-          headerLeftContainerStyle: { paddingLeft: 10 },
-          headerTitleAlign: 'center',
-          headerTitleStyle: { paddingBottom: 5 },
-        }}
-        name="Create post"
-        component={CreatePost}
-      />
-    </BottomTabs.Navigator>
-  );
-};
-
+}
 const styles = StyleSheet.create({
-  trashButton: {
-    backgroundColor: '#F6F6F6',
-    height: 40,
-    width: 70,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-  },
-  postContainer: {
+  container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 16,
+    paddingTop: 28,
     backgroundColor: '#fff',
   },
-  postImage: {
-    flex: 2,
-    width: '80%',
-    height: '40%',
-    color: '#F6F6F6',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  postImageAdd: {
-    width: 40,
-    height: 40,
-    borderRadius: 100,
-    color: '#FFFFFF',
-  },
-  postImageText: {
-    alignItems: 'flex-start',
-  },
-  postForm: {
-    flex: 3,
-  },
-  postButton: {
-    backgroundColor: '#E8E8E8',
-    height: 50,
-    width: 343,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 100,
-    marginTop: 44,
-  },
-  postButtonText: {
-    color: '#fff',
-    fontWeight: '400',
-  },
-  postName: {
-    width: 343,
-    height: 50,
+  imageBackground: {
+    width: '100%',
+    height: 240,
+    backgroundColor: '#F6F6F6',
+    borderWidth: 1,
+    borderColor: '#E8E8E8',
     borderRadius: 8,
-    marginTop: 33,
-    padding: 16,
-    fontStyle: 'normal',
-    fontWeight: '400',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  photoIconWrap: {
+    width: 60,
+    height: 60,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+  },
+
+  text: {
+    marginTop: 8,
     fontSize: 16,
-    lineHeight: 19,
+    fontFamily: 'Roboto',
+    color: '#BDBDBD',
+    // lineHeight: 19,
+  },
+
+  input: {
+    paddingBottom: 16,
+    paddingTop: 16,
+    width: '100%',
+    height: 50,
+    borderBottomWidth: 1,
     borderBottomColor: '#E8E8E8',
-    borderBottomWidth: 2,
+    fontSize: 16,
+    fontFamily: 'Roboto',
+  },
+
+  locationIcon: {
+    position: 'absolute',
+    bottom: (50 - 16) / 2,
+  },
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 32,
+  },
+  buttonText: {
+    fontFamily: 'Roboto',
+    color: '#BDBDBD',
+    fontSize: 16,
+  },
+
+  trashButton: {
+    width: 70,
+    height: 40,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+  },
+
+  trashIconWrap: {
+    alignItems: 'center',
+    marginTop: 100,
   },
 });
-
-export default CreatePostsScreen;

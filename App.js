@@ -5,7 +5,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './src/Screens/Home/HomeScreen';
 import { LoginScreen } from './src/Screens/LoginScreen/LoginScreen';
 import { RegistrationScreen } from './src/Screens/RegistrationScreen/RegistrationScreen';
-import { Button } from 'react-native';
 import CreatePostsScreen from './src/Screens/CreatePostsScreen/CreatePostsScreen';
 
 export default function App() {
@@ -16,9 +15,24 @@ export default function App() {
         <MainStack.Screen
           name="RegistrationScreen"
           component={RegistrationScreen}
+          options={{
+            headerShown: false,
+          }}
         />
-        <MainStack.Screen name="LoginScreen" component={LoginScreen} />
-        <MainStack.Screen name="HomeScreen" component={HomeScreen} />
+        <MainStack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
+        <MainStack.Screen
+          name="HomeScreen"
+          component={HomeScreen}
+          options={{
+            headerShown: false,
+          }}
+        />
         <MainStack.Screen
           name="CreatePostsScreen"
           component={CreatePostsScreen}
