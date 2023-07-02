@@ -67,20 +67,6 @@ export const HomeScreen = () => {
         <Feather name="plus" size={24} color="#FFFFFF" />
       </TouchableOpacity>
     ),
-
-    // headerLeft: () => (
-    //   <Pressable
-    //     onPress={() => navigation.navigate('Публікації')}
-    //     style={{ marginLeft: 16 }}
-    //   >
-    //     <AntDesign name="arrowleft" size={24} color="#212121CC" />
-    //   </Pressable>
-    // ),
-    // tabBarStyle: { display: 'none' },
-
-    // headerShown: false,
-    // tabBarStyle: { display: 'none' },
-    // headerTitleAlign: 'center',
   };
 
   return (
@@ -100,7 +86,13 @@ export const HomeScreen = () => {
         component={CreatePostsScreen}
         options={optionsCreatePostsScreen}
       />
-      <Tabs.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Tabs.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Tabs.Navigator>
   );
 };
@@ -118,17 +110,9 @@ const styles = StyleSheet.create({
     borderBottomColor: '#BDBDBD',
   },
   headerTitle: {
-    // color: '#212121',
-    // fontFamily: 'Roboto',
-    // fontSize: 17,
     color: '#212121',
     fontSize: 17,
     fontFamily: 'Roboto',
-    // textAlign: 'center',
-    // fontStyle: 'normal',
-    // fontWeight: 500,
-    // lineHeight: 22,
-    // letterSpacing: -0.408,
   },
   plusIcon: {
     alignItems: 'center',

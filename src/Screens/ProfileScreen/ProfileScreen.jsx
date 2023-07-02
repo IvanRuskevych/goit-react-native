@@ -124,10 +124,11 @@ const styles = StyleSheet.create({
   userName: {
     fontFamily: 'Roboto',
     color: '#212121',
+    fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: 'center',
-    marginTop: 43,
+    marginTop: 32,
   },
   contentWrapper: {
     backgroundColor: '#fff',

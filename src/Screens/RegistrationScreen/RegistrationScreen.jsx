@@ -2,7 +2,6 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import {
   Dimensions,
-  Image,
   ImageBackground,
   Keyboard,
   KeyboardAvoidingView,

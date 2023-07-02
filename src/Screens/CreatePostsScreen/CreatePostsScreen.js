@@ -10,9 +10,7 @@ import {
   Platform,
   Pressable,
 } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 export default function CreatePostsScreen() {
   const [name, setName] = useState('');
@@ -64,10 +62,10 @@ export default function CreatePostsScreen() {
               }}
             />
             <View>
-              <Ionicons
-                name="ios-location-outline"
+              <Feather
+                name="map-pin"
                 size={24}
-                color="#BDBDBD"
+                color="black"
                 style={{
                   ...styles.locationIcon,
                   color: isLocationFocus ? '#ff6c00' : '#BDBDBD',
@@ -96,7 +94,7 @@ export default function CreatePostsScreen() {
             </Pressable>
             <View style={styles.trashIconWrap}>
               <Pressable style={styles.trashButton}>
-                <FontAwesome5 name="trash-alt" size={24} color="#DADADA" />
+                <Feather name="trash-2" size={24} color="#BDBDBD" />
               </Pressable>
             </View>
           </KeyboardAvoidingView>
@@ -114,7 +112,7 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     width: '100%',
-    height: 200,
+    height: 240,
     backgroundColor: '#F6F6F6',
     borderWidth: 1,
     borderColor: '#E8E8E8',
@@ -122,6 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+
   photoIconWrap: {
     width: 60,
     height: 60,
@@ -130,22 +129,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 50,
   },
+
   text: {
     marginTop: 8,
     fontSize: 16,
     fontFamily: 'Roboto',
     color: '#BDBDBD',
-    lineHeight: 19,
+    // lineHeight: 19,
   },
+
   input: {
+    paddingBottom: 16,
+    paddingTop: 16,
     width: '100%',
-    height: 35,
+    height: 50,
     borderBottomWidth: 1,
     borderBottomColor: '#E8E8E8',
+    fontSize: 16,
+    fontFamily: 'Roboto',
   },
+
   locationIcon: {
     position: 'absolute',
-    bottom: 7,
+    bottom: (50 - 16) / 2,
   },
   button: {
     width: '100%',
@@ -161,6 +167,7 @@ const styles = StyleSheet.create({
     color: '#BDBDBD',
     fontSize: 16,
   },
+
   trashButton: {
     width: 70,
     height: 40,
@@ -170,8 +177,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     textAlign: 'center',
   },
+
   trashIconWrap: {
     alignItems: 'center',
-    marginTop: 90,
+    marginTop: 100,
   },
 });
