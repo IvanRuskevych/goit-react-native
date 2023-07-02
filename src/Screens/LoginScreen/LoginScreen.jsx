@@ -18,7 +18,7 @@ import InputComponent from '../../components/InputComponent/InputComponent';
 const INIT_STATE = {
   email: '',
   password: '',
-  showPassword: false,
+  hidePassword: true,
 };
 
 export const LoginScreen = () => {
@@ -27,17 +27,7 @@ export const LoginScreen = () => {
 
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
-  const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
-
-  const handleShowPassword = () => {
-    if (!password) {
-      console.debug('Enter password');
-      alert('Enter password');
-      return;
-    }
-
-    setShowPassword(!showPassword);
-  };
+  const [hidePassword, setHidePassword] = useState(INIT_STATE.hidePassword);
 
   const onLogin = () => {
     if (!email || !password) {
@@ -48,7 +38,24 @@ export const LoginScreen = () => {
     navigate('HomeScreen');
     setEmail('');
     setPassword('');
-    setShowPassword(false);
+    setHidePassword(false);
+  };
+
+  const handleTogglePassword = () => {
+    if (!password) {
+      console.debug('Enter password');
+      alert('Enter password');
+      return;
+    }
+
+    setHidePassword(!hidePassword);
+  };
+
+  const handlPassword = (text) => {
+    setPassword(text);
+    if (text === '') {
+      return setHidePassword(true);
+    }
   };
 
   return (
@@ -82,19 +89,19 @@ export const LoginScreen = () => {
                       name="password"
                       placeholder="Пароль"
                       value={password}
-                      onChangeText={setPassword}
+                      onChangeText={handlPassword}
                       // =======================
-                      secureTextEntry={showPassword}
+                      secureTextEntry={hidePassword}
                       // ========================
                     />
 
                     <Pressable
                       title=""
-                      onPress={handleShowPassword}
+                      onPress={handleTogglePassword}
                       style={styles.textShowWraper}
                     >
                       <Text style={styles.textShow}>
-                        {showPassword ? 'Показати' : 'Сховати'}
+                        {hidePassword ? 'Показати' : 'Сховати'}
                       </Text>
                     </Pressable>
                   </View>

@@ -20,7 +20,7 @@ const INIT_STATE = {
   login: '',
   email: '',
   password: '',
-  showPassword: false,
+  hidePassword: true,
 };
 
 export const RegistrationScreen = () => {
@@ -28,7 +28,7 @@ export const RegistrationScreen = () => {
   const [login, setLogin] = useState(INIT_STATE.login);
   const [email, setEmail] = useState(INIT_STATE.email);
   const [password, setPassword] = useState(INIT_STATE.password);
-  const [showPassword, setShowPassword] = useState(INIT_STATE.showPassword);
+  const [hidePassword, setHidePassword] = useState(INIT_STATE.hidePassword);
 
   const backgroundImage = require('../../../images/bg-img.webp');
   const avatar = require('../../../images/user-photo.webp');
@@ -48,16 +48,24 @@ export const RegistrationScreen = () => {
     setLogin('');
     setEmail('');
     setPassword('');
-    setShowPassword(false);
+    setHidePassword(false);
   };
-  const handleShowPassword = () => {
+
+  const handleTogglePassword = () => {
     if (!password) {
       console.debug('Enter password');
       alert('Enter password');
       return;
     }
 
-    setShowPassword(!showPassword);
+    setHidePassword(!hidePassword);
+  };
+
+  const handlPassword = (text) => {
+    setPassword(text);
+    if (text === '') {
+      return setHidePassword(true);
+    }
   };
 
   return (
@@ -116,19 +124,19 @@ export const RegistrationScreen = () => {
                       name="password"
                       placeholder="Пароль"
                       // =======================
-                      secureTextEntry={showPassword}
+                      secureTextEntry={hidePassword}
                       // ========================
                       value={password}
-                      onChangeText={setPassword}
+                      onChangeText={handlPassword}
                     />
 
                     <Pressable
                       title=""
-                      onPress={handleShowPassword}
+                      onPress={handleTogglePassword}
                       style={styles.textShowWraper}
                     >
                       <Text style={styles.textShow}>
-                        {showPassword ? 'Показати' : 'Сховати'}
+                        {hidePassword ? 'Показати' : 'Сховати'}
                       </Text>
                     </Pressable>
                   </View>
