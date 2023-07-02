@@ -75,17 +75,17 @@ export const RegistrationScreen = () => {
             <View
               style={{
                 ...styles.registrationAddAvatarWrapper,
-                ...styles.registrationDelAvatarWrapper, // step 1/3 закоментувати для варіанту "додати аватар"
+                // ...styles.registrationDelAvatarWrapper, // step 1/3 закоментувати для варіанту "додати аватар"
               }}
             >
               {/* step 2/3 закоментувати Image для варіанту "додати аватар" */}
-              <Image source={avatar} style={styles.avatar} />
+              {/* <Image source={avatar} style={styles.avatar} /> */}
               <AntDesign
                 name="pluscircleo"
                 size={25}
                 style={{
                   ...styles.iconAddAvatar,
-                  ...styles.iconDelAvatar, // step 3/3 закоментувати для варіанту "додати аватар"
+                  // ...styles.iconDelAvatar, // step 3/3 закоментувати для варіанту "додати аватар"
                 }}
               />
             </View>

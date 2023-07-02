@@ -30,10 +30,9 @@ const optionsNavigator = ({ route }) => ({
     let iconName;
     if (route.name === 'Публікації') {
       iconName = focused ? 'grid' : 'grid';
+    } else if (route.name === 'ProfileScreen') {
+      iconName = focused ? 'user' : 'user';
     }
-    // else if (route.name === 'Settings') {
-    //   iconName = focused ? 'ios-list' : 'ios-list-outline';
-    // }
     return <Feather name={iconName} size={size} color={color} />;
   },
   // headerRight: () => (
@@ -46,25 +45,51 @@ const optionsNavigator = ({ route }) => ({
   // ),
 });
 
-const optionsPostsScreen = {
-  headerRight: () => (
-    <TouchableOpacity
-      onPress={() => navigate('LoginScreen')}
-      style={{ marginRight: 16 }}
-    >
-      <Feather name="log-out" size={24} color="#BDBDBD" />
-    </TouchableOpacity>
-  ),
-};
-
 export const HomeScreen = () => {
   const { navigate } = useNavigation();
+  const optionsPostsScreen = {
+    headerRight: () => (
+      <TouchableOpacity
+        onPress={() => navigate('LoginScreen')}
+        style={{ marginRight: 16 }}
+      >
+        <Feather name="log-out" size={24} color="#BDBDBD" />
+      </TouchableOpacity>
+    ),
+  };
+
+  const optionsCreatePostsScreen = {
+    tabBarIcon: () => (
+      <TouchableOpacity
+        style={styles.plusIcon}
+        onPress={() => navigate('CreatePostsScreen')}
+      >
+        <Feather name="plus" size={24} color="#FFFFFF" />
+      </TouchableOpacity>
+    ),
+
+    // headerLeft: () => (
+    //   <Pressable
+    //     onPress={() => navigation.navigate('Публікації')}
+    //     style={{ marginLeft: 16 }}
+    //   >
+    //     <AntDesign name="arrowleft" size={24} color="#212121CC" />
+    //   </Pressable>
+    // ),
+    // tabBarStyle: { display: 'none' },
+
+    // headerShown: false,
+    // tabBarStyle: { display: 'none' },
+    // headerTitleAlign: 'center',
+  };
+
   return (
     <Tabs.Navigator
       initialRouteName="Публікації"
       screenOptions={optionsNavigator}
     >
       <Tabs.Screen
+        // name="PostsScreen"
         name="Публікації" // дає назву
         component={PostsScreen}
         options={optionsPostsScreen}
@@ -73,22 +98,7 @@ export const HomeScreen = () => {
         // name="CreatePostsScreen"
         name="Створити публікацію"
         component={CreatePostsScreen}
-        options={{
-          tabBarIcon: () => {
-            return (
-              <TouchableOpacity
-                style={styles.addButton}
-                activeOpacity={0.5}
-                onPress={() => navigate('CreatePostsScreen')}
-              >
-                <Text style={styles.addButtonText}>+</Text>
-              </TouchableOpacity>
-            );
-          },
-          headerShown: false,
-          tabBarStyle: { display: 'none' },
-          headerTitleAlign: 'center',
-        }}
+        options={optionsCreatePostsScreen}
       />
       <Tabs.Screen name="ProfileScreen" component={ProfileScreen} />
     </Tabs.Navigator>
@@ -109,7 +119,7 @@ const styles = StyleSheet.create({
   },
   headerTitle: {
     // color: '#212121',
-    // fontFamily: 'Roboto-Medium',
+    // fontFamily: 'Roboto',
     // fontSize: 17,
     color: '#212121',
     fontSize: 17,

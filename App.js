@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './src/Screens/Home/HomeScreen';
 import { LoginScreen } from './src/Screens/LoginScreen/LoginScreen';
 import { RegistrationScreen } from './src/Screens/RegistrationScreen/RegistrationScreen';
-import { Button } from 'react-native';
+// import { Button } from 'react-native';
 import CreatePostsScreen from './src/Screens/CreatePostsScreen/CreatePostsScreen';
 
 export default function App() {

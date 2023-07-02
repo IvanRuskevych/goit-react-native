@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 8,
     fontSize: 16,
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto',
     color: '#BDBDBD',
     lineHeight: 19,
   },
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   buttonText: {
-    fontFamily: 'Roboto-Regular',
+    fontFamily: 'Roboto',
     color: '#BDBDBD',
     fontSize: 16,
   },
