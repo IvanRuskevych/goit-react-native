@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useRef, useState } from 'react';
 import {
   Text,
   StyleSheet,
@@ -9,20 +9,49 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  TouchableOpacity,
 } from 'react-native';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+// import { useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
 export default function CreatePostsScreen() {
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
+  // const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  // const [location, setLocation] = useState('');
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isNameFocus, setIsNameFocus] = useState(false);
   const [isLocationFocus, setIsLocationFocus] = useState(false);
 
+  const cameraRef = useRef(null);
+  const [photoUri, setPhotoUri] = useState(null);
+  const [photoName, setPhotoName] = useState('');
+  const [locationName, setLocationName] = useState('');
+
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
+  };
+
+  const handleMakePhoto = async () => {
+    if (cameraRef.current) {
+      const { uri } = await cameraRef.current.takePictureAsync();
+      setPhotoUri(uri);
+    }
+  };
+
+  const handlePostPhoto = () => {
+    // записати через dispatch photo, location, name ...
+    navigation.navigate('HomeScreen', { screen: 'Публікації' });
+    clearDataFields();
+  };
+
+  const clearDataFields = () => {
+    setPhotoUri(null);
+    setPhotoName('');
+    setLocationName('');
   };
 
   return (
@@ -33,23 +62,21 @@ export default function CreatePostsScreen() {
             {!isShowKeyboard && (
               <View>
                 <View style={styles.imageBackground}>
-                  <View style={styles.photoIconWrap}>
-                    <MaterialIcons
-                      name="photo-camera"
-                      size={24}
-                      color="#BDBDBD"
-                    />
-                  </View>
+                  <TouchableOpacity onPress={handleMakePhoto}>
+                    <View style={styles.photoIconWrap}>
+                      <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+                    </View>
+                  </TouchableOpacity>
                 </View>
                 <Text style={styles.text}>Завантажте фото</Text>
               </View>
             )}
 
             <TextInput
-              value={name}
-              onChangeText={(value) => setName(value)}
               placeholder="Назва..."
               placeholderTextColor={'#BDBDBD'}
+              value={photoName}
+              onChangeText={(value) => setPhotoName(value)}
               onFocus={() => {
                 setIsShowKeyboard(true);
                 setIsNameFocus(true);
@@ -72,8 +99,8 @@ export default function CreatePostsScreen() {
                 }}
               />
               <TextInput
-                value={location}
-                onChangeText={(value) => setLocation(value)}
+                value={locationName}
+                onChangeText={(value) => setLocationName(value)}
                 placeholder="Місцевість..."
                 placeholderTextColor={'#BDBDBD'}
                 onFocus={() => {
@@ -89,9 +116,15 @@ export default function CreatePostsScreen() {
                 }}
               />
             </View>
-            <Pressable style={styles.button}>
-              <Text style={styles.buttonText}>Опубліковати</Text>
-            </Pressable>
+
+            <TouchableOpacity
+              style={styles.button}
+              // disabled={photoUri !== null && photoName !== '' && locationName !== '' ? false : true}
+              onPress={handlePostPhoto}
+            >
+              <Text style={styles.buttonText}>Опублікувати</Text>
+            </TouchableOpacity>
+
             <View style={styles.trashIconWrap}>
               <Pressable style={styles.trashButton}>
                 <Feather name="trash-2" size={24} color="#BDBDBD" />

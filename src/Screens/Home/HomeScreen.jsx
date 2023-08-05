@@ -40,10 +40,7 @@ export const HomeScreen = () => {
 
   const optionsPostsScreen = {
     headerRight: () => (
-      <TouchableOpacity
-        onPress={() => navigate('LoginScreen')}
-        style={{ marginRight: 16 }}
-      >
+      <TouchableOpacity onPress={() => navigate('LoginScreen')} style={{ marginRight: 16 }}>
         <Feather name="log-out" size={24} color="#BDBDBD" />
       </TouchableOpacity>
     ),
@@ -57,10 +54,7 @@ export const HomeScreen = () => {
     ),
 
     headerLeft: () => (
-      <Pressable
-        onPress={() => navigate('Публікації')}
-        style={{ marginLeft: 16 }}
-      >
+      <Pressable onPress={() => navigate('Публікації')} style={{ marginLeft: 16 }}>
         <Feather name="arrow-left" size={24} color="#212121CC" />
       </Pressable>
     ),
@@ -68,10 +62,7 @@ export const HomeScreen = () => {
   };
 
   return (
-    <Tabs.Navigator
-      initialRouteName="Публікації"
-      screenOptions={optionsNavigator}
-    >
+    <Tabs.Navigator initialRouteName="Публікації" screenOptions={optionsNavigator}>
       <Tabs.Screen
         // name="PostsScreen"
         name="Публікації" // дає назву
