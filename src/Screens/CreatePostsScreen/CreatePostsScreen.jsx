@@ -23,6 +23,7 @@ import {
 
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
+import { nanoid } from '@reduxjs/toolkit';
 
 export default function CreatePostsScreen() {
   const navigation = useNavigation();
@@ -94,6 +95,7 @@ export default function CreatePostsScreen() {
     if (cameraRef) {
       try {
         const { uri } = await cameraRef.takePictureAsync();
+        // console.log('makePostPhoto--<<uri', uri);
         await MediaLibrary.createAssetAsync(uri);
 
         setpostPhotoUri(uri);
@@ -105,16 +107,29 @@ export default function CreatePostsScreen() {
     addPostLocation();
   };
 
-  const handlePostPhoto = () => {
-    // записати через dispatch photo, location, name ...
-    navigation.navigate('HomeScreen', { screen: 'Публікації' });
-    clearDataFields();
-  };
-
-  const clearDataFields = () => {
+  const clearCreatePostForm = () => {
     setpostPhotoUri(null);
     setPostPhotoName('');
+
+    setPostLocation(null);
     setPostAddress('');
+
+    keyboardHide();
+  };
+
+  const onPressToPost = () => {
+    if (!postPhotoName.trim() || !postAddress) {
+      return alert('Будь ласка завантажте фото та заповніть всі поля');
+      // console.log({ postPhotoUri, postPhotoName, postAddress, postLocation });
+    }
+
+    // keyboardHide();
+
+    const newPost = { id: nanoid(), postPhotoUri, postPhotoName, postAddress, postLocation };
+
+    navigation.navigate('Публікації', newPost);
+
+    clearCreatePostForm();
   };
 
   return (
@@ -124,32 +139,35 @@ export default function CreatePostsScreen() {
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
             {!isShowKeyboard && (
               <View>
-                <View style={styles.imageBackground}>
-                  {true ? (
-                    // postPhotoUri
+                {postPhotoUri ? (
+                  // TODO додати фото у замість камери
+                  <View style={styles.imageBackground}>
                     <TouchableOpacity onPress={makePostPhoto}>
                       <View style={styles.photoIconWrap}>
                         <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
                       </View>
                     </TouchableOpacity>
-                  ) : (
-                    <Camera>
+                  </View>
+                ) : (
+                  <View style={styles.imageBackground}>
+                    <Camera style={styles.camera} ref={setCameraRef}>
                       <TouchableOpacity onPress={makePostPhoto}>
                         <View style={styles.photoIconWrap}>
                           <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
                         </View>
                       </TouchableOpacity>
                     </Camera>
-                  )}
-                </View>
+                  </View>
+                )}
+
                 <Text style={styles.text}>Завантажте фото</Text>
               </View>
             )}
 
             <TextInput
+              value={postPhotoName}
               placeholder="Назва..."
               placeholderTextColor={'#BDBDBD'}
-              value={postPhotoName}
               onChangeText={(value) => setPostPhotoName(value)}
               onFocus={() => {
                 setIsShowKeyboard(true);
@@ -194,15 +212,15 @@ export default function CreatePostsScreen() {
             <TouchableOpacity
               style={styles.button}
               // disabled={photoUri !== null && photoName !== '' && postAddress !== '' ? false : true}
-              onPress={handlePostPhoto}
+              onPress={onPressToPost}
             >
               <Text style={styles.buttonText}>Опублікувати</Text>
             </TouchableOpacity>
 
             <View style={styles.trashIconWrap}>
-              <Pressable style={styles.trashButton}>
+              <TouchableOpacity style={styles.trashButton} onPress={clearCreatePostForm}>
                 <Feather name="trash-2" size={24} color="#BDBDBD" />
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </View>
@@ -288,5 +306,11 @@ const styles = StyleSheet.create({
   trashIconWrap: {
     alignItems: 'center',
     marginTop: 100,
+  },
+  camera: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
   },
 });
