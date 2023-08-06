@@ -17,13 +17,13 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
   TouchableOpacity,
 } from 'react-native';
 
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
 import { nanoid } from '@reduxjs/toolkit';
+import { ImageBackground } from 'react-native';
 
 export default function CreatePostsScreen() {
   const navigation = useNavigation();
@@ -40,6 +40,8 @@ export default function CreatePostsScreen() {
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
   const [isNameFocus, setIsNameFocus] = useState(false); //   const isFocused = useIsFocused();
   const [isLocationFocus, setIsLocationFocus] = useState(false);
+
+  const newPost = { id: nanoid(), postPhotoUri, postPhotoName, postAddress, postLocation };
 
   // Camera & Location permissions
   useEffect(() => {
@@ -120,12 +122,9 @@ export default function CreatePostsScreen() {
   const onPressToPost = () => {
     if (!postPhotoName.trim() || !postAddress) {
       return alert('Будь ласка завантажте фото та заповніть всі поля');
-      // console.log({ postPhotoUri, postPhotoName, postAddress, postLocation });
     }
 
     // keyboardHide();
-
-    const newPost = { id: nanoid(), postPhotoUri, postPhotoName, postAddress, postLocation };
 
     navigation.navigate('Публікації', newPost);
 
@@ -141,13 +140,14 @@ export default function CreatePostsScreen() {
               <View>
                 {postPhotoUri ? (
                   // TODO додати фото у замість камери
-                  <View style={styles.imageBackground}>
+
+                  <ImageBackground style={styles.imageBackground} source={{ uri: postPhotoUri }}>
                     <TouchableOpacity onPress={makePostPhoto}>
                       <View style={styles.photoIconWrap}>
                         <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
                       </View>
                     </TouchableOpacity>
-                  </View>
+                  </ImageBackground>
                 ) : (
                   <View style={styles.imageBackground}>
                     <Camera style={styles.camera} ref={setCameraRef}>
@@ -244,6 +244,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+
+    overflow: 'hidden',
+    // resizeMode: 'cover',
   },
 
   photoIconWrap: {
