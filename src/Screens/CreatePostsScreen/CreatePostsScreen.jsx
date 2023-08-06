@@ -1,4 +1,13 @@
-import { useRef, useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import * as MediaLibrary from 'expo-media-library';
+import * as Location from 'expo-location';
+
+import {
+  // useIsFocused,
+  useNavigation,
+} from '@react-navigation/native';
+
 import {
   Text,
   StyleSheet,
@@ -11,35 +20,89 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
+
 import { Feather, MaterialIcons } from '@expo/vector-icons';
-// import { useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import { Camera } from 'expo-camera';
 
 export default function CreatePostsScreen() {
-  // const dispatch = useDispatch();
   const navigation = useNavigation();
 
-  // const [location, setLocation] = useState('');
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+
+  const [postPhotoUri, setpostPhotoUri] = useState(null); //setPostImg
+  const [postPhotoName, setPostPhotoName] = useState('');
+
+  const [postLocation, setPostLocation] = useState(null);
+  const [postAddress, setPostAddress] = useState('');
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [isNameFocus, setIsNameFocus] = useState(false);
+  const [isNameFocus, setIsNameFocus] = useState(false); //   const isFocused = useIsFocused();
   const [isLocationFocus, setIsLocationFocus] = useState(false);
 
-  const cameraRef = useRef(null);
-  const [photoUri, setPhotoUri] = useState(null);
-  const [photoName, setPhotoName] = useState('');
-  const [locationName, setLocationName] = useState('');
+  // Camera & Location permissions
+  useEffect(() => {
+    setpostPhotoUri(null);
+    setPostLocation(null);
+
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === 'granted');
+    })();
+
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+      }
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
 
-  const handleMakePhoto = async () => {
-    if (cameraRef.current) {
-      const { uri } = await cameraRef.current.takePictureAsync();
-      setPhotoUri(uri);
+  const addPostLocation = async () => {
+    const location = await Location.getCurrentPositionAsync();
+
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+
+    const [address] = await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+
+    setPostLocation(coords);
+    setPostAddress(address.city);
+  };
+
+  const makePostPhoto = async () => {
+    if (cameraRef) {
+      try {
+        const { uri } = await cameraRef.takePictureAsync();
+        await MediaLibrary.createAssetAsync(uri);
+
+        setpostPhotoUri(uri);
+      } catch (error) {
+        console.log('Error-->>', error.message);
+      }
     }
+
+    addPostLocation();
   };
 
   const handlePostPhoto = () => {
@@ -49,9 +112,9 @@ export default function CreatePostsScreen() {
   };
 
   const clearDataFields = () => {
-    setPhotoUri(null);
-    setPhotoName('');
-    setLocationName('');
+    setpostPhotoUri(null);
+    setPostPhotoName('');
+    setPostAddress('');
   };
 
   return (
@@ -62,11 +125,22 @@ export default function CreatePostsScreen() {
             {!isShowKeyboard && (
               <View>
                 <View style={styles.imageBackground}>
-                  <TouchableOpacity onPress={handleMakePhoto}>
-                    <View style={styles.photoIconWrap}>
-                      <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
-                    </View>
-                  </TouchableOpacity>
+                  {true ? (
+                    // postPhotoUri
+                    <TouchableOpacity onPress={makePostPhoto}>
+                      <View style={styles.photoIconWrap}>
+                        <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+                      </View>
+                    </TouchableOpacity>
+                  ) : (
+                    <Camera>
+                      <TouchableOpacity onPress={makePostPhoto}>
+                        <View style={styles.photoIconWrap}>
+                          <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+                        </View>
+                      </TouchableOpacity>
+                    </Camera>
+                  )}
                 </View>
                 <Text style={styles.text}>Завантажте фото</Text>
               </View>
@@ -75,8 +149,8 @@ export default function CreatePostsScreen() {
             <TextInput
               placeholder="Назва..."
               placeholderTextColor={'#BDBDBD'}
-              value={photoName}
-              onChangeText={(value) => setPhotoName(value)}
+              value={postPhotoName}
+              onChangeText={(value) => setPostPhotoName(value)}
               onFocus={() => {
                 setIsShowKeyboard(true);
                 setIsNameFocus(true);
@@ -99,8 +173,8 @@ export default function CreatePostsScreen() {
                 }}
               />
               <TextInput
-                value={locationName}
-                onChangeText={(value) => setLocationName(value)}
+                value={postAddress}
+                onChangeText={(value) => setPostAddress(value)}
                 placeholder="Місцевість..."
                 placeholderTextColor={'#BDBDBD'}
                 onFocus={() => {
@@ -119,7 +193,7 @@ export default function CreatePostsScreen() {
 
             <TouchableOpacity
               style={styles.button}
-              // disabled={photoUri !== null && photoName !== '' && locationName !== '' ? false : true}
+              // disabled={photoUri !== null && photoName !== '' && postAddress !== '' ? false : true}
               onPress={handlePostPhoto}
             >
               <Text style={styles.buttonText}>Опублікувати</Text>
