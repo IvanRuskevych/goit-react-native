@@ -47,30 +47,15 @@ export default function PostsScreen({ route }) {
           <Image source={{ uri: photo }} style={styles.postPhoto} />
           <Text style={styles.title}>{title}</Text>
 
-          {/* <View style={styles.postWrapper}>
-            <View style={styles.comment}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('CommentsScreen')}
-              ></TouchableOpacity>
-              <Text>Comment</Text>
-            </View>
-
-            <View style={styles.location}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate('MapScreen', { location })}
-              ></TouchableOpacity>
-              <Text>{photoLocation}</Text>
-            </View>
-          </View> */}
           <View style={styles.postDataContainer}>
             <Feather
               name="message-circle"
               size={24}
               color={commonStyle.color.accent}
               style={{ marginRight: 6 }}
-              // onPress={() => {
-              //   navigation.navigate('Comments', { idPost: id, photo });
-              // }}
+              onPress={() => {
+                navigation.navigate('Comments', { photo });
+              }}
             />
             <Text style={[styles.text, { marginRight: 24 }]}>
               {/* {comments.length} */}

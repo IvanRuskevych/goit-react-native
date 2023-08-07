@@ -5,6 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from './src/Screens/Home/HomeScreen';
 import { LoginScreen } from './src/Screens/LoginScreen/LoginScreen';
 import { RegistrationScreen } from './src/Screens/RegistrationScreen/RegistrationScreen';
+import { commonStyle } from './src/styles/commonStyles';
+import CommentsScreen from './src/Screens/CommentsScreen/CommentsScreen';
+import { Octicons } from '@expo/vector-icons';
 // import CreatePostsScreen from './src/Screens/CreatePostsScreen/CreatePostsScreen';
 
 export default function App() {
@@ -32,6 +35,26 @@ export default function App() {
           options={{
             headerShown: false,
           }}
+        />
+        <MainStack.Screen
+          name="Comments"
+          component={CommentsScreen}
+          options={({ navigation }) => ({
+            title: 'Коментарі',
+            headerTitleAlign: 'center',
+            headerLeft: () => (
+              <Octicons
+                name="arrow-left"
+                size={24}
+                color={commonStyle.color.text}
+                style={{
+                  marginLeft: 16,
+                  padding: 5,
+                }}
+                onPress={() => navigation.navigate('Публікації')}
+              />
+            ),
+          })}
         />
       </MainStack.Navigator>
     </NavigationContainer>
