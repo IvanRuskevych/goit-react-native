@@ -31,7 +31,7 @@ export default function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
 
-  const [postPhotoUri, setpostPhotoUri] = useState(null); //setPostImg
+  const [postPhotoUri, setPostPhotoUri] = useState(null); //setPostImg
   const [postPhotoName, setPostPhotoName] = useState('');
 
   const [postLocation, setPostLocation] = useState(null);
@@ -45,7 +45,7 @@ export default function CreatePostsScreen() {
 
   // Camera & Location permissions
   useEffect(() => {
-    setpostPhotoUri(null);
+    setPostPhotoUri(null);
     setPostLocation(null);
 
     (async () => {
@@ -78,18 +78,16 @@ export default function CreatePostsScreen() {
 
   const addPostLocation = async () => {
     const location = await Location.getCurrentPositionAsync();
-
     const coords = {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     };
+    setPostLocation(coords);
 
     const [address] = await Location.reverseGeocodeAsync({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     });
-
-    setPostLocation(coords);
     setPostAddress(address.city);
   };
 
@@ -100,7 +98,7 @@ export default function CreatePostsScreen() {
         // console.log('makePostPhoto--<<uri', uri);
         await MediaLibrary.createAssetAsync(uri);
 
-        setpostPhotoUri(uri);
+        setPostPhotoUri(uri);
       } catch (error) {
         console.log('Error-->>', error.message);
       }
@@ -110,7 +108,7 @@ export default function CreatePostsScreen() {
   };
 
   const clearCreatePostForm = () => {
-    setpostPhotoUri(null);
+    setPostPhotoUri(null);
     setPostPhotoName('');
 
     setPostLocation(null);
@@ -130,6 +128,9 @@ export default function CreatePostsScreen() {
 
     clearCreatePostForm();
   };
+
+  const isPostFormFillup = () =>
+    postPhotoUri !== null && postPhotoName !== '' && postAddress !== '' ? false : true;
 
   return (
     <View style={styles.container}>
@@ -160,7 +161,9 @@ export default function CreatePostsScreen() {
                   </View>
                 )}
 
-                <Text style={styles.text}>Завантажте фото</Text>
+                <Text style={styles.text}>
+                  {!postPhotoUri ? 'Завантажте фото' : 'Редагувати фото'}{' '}
+                </Text>
               </View>
             )}
 
@@ -210,11 +213,21 @@ export default function CreatePostsScreen() {
             </View>
 
             <TouchableOpacity
-              style={styles.button}
-              // disabled={photoUri !== null && photoName !== '' && postAddress !== '' ? false : true}
+              style={
+                isPostFormFillup()
+                  ? styles.button
+                  : { ...styles.button, backgroundColor: '#ff6c00' }
+              }
+              disabled={isPostFormFillup()}
               onPress={onPressToPost}
             >
-              <Text style={styles.buttonText}>Опублікувати</Text>
+              <Text
+                style={
+                  isPostFormFillup() ? styles.buttonText : { ...styles.buttonText, color: '#fff' }
+                }
+              >
+                Опублікувати
+              </Text>
             </TouchableOpacity>
 
             <View style={styles.trashIconWrap}>
