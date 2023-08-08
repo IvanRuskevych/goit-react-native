@@ -34,7 +34,6 @@ export const LoginScreen = () => {
       alert('Please fill in all fields');
       return;
     }
-    // console.debug('Credentials:', `email: ${email}, password: ${password}`);
     navigate('HomeScreen');
     setEmail('');
     setPassword('');
@@ -63,18 +62,15 @@ export const LoginScreen = () => {
       <View style={styles.bgImageContainer}>
         <StatusBar style="auto" />
         <ImageBackground
-          // source={{ uri: 'https://reactjs.org/logo-og.png' }}
+          // source={{ uri: qwe }}
           source={backgraundImage}
           style={styles.bgImage}
         >
           <View style={styles.regFormContainer}>
-            {/* registrationAvatarWrapper */}
             <Text style={styles.regFormTitle}>Увійти</Text>
 
             <View style={styles.inputsContainer}>
-              <KeyboardAvoidingView
-                behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-              >
+              <KeyboardAvoidingView behavior={Platform.OS == 'ios' ? 'padding' : 'height'}>
                 <View style={styles.inputsWraper}>
                   <InputComponent
                     name="email"
@@ -100,18 +96,12 @@ export const LoginScreen = () => {
                       onPress={handleTogglePassword}
                       style={styles.textShowWraper}
                     >
-                      <Text style={styles.textShow}>
-                        {hidePassword ? 'Показати' : 'Сховати'}
-                      </Text>
+                      <Text style={styles.textShow}>{hidePassword ? 'Показати' : 'Сховати'}</Text>
                     </Pressable>
                   </View>
                 </View>
 
-                <TouchableOpacity
-                  title="Увійти"
-                  style={styles.button}
-                  onPress={onLogin}
-                >
+                <TouchableOpacity title="Увійти" style={styles.button} onPress={onLogin}>
                   <Text style={styles.textButton}>Увійти</Text>
                 </TouchableOpacity>
               </KeyboardAvoidingView>
@@ -191,32 +181,6 @@ const styles = StyleSheet.create({
     rowGap: 16,
   },
 
-  // input: {
-  //   paddingLeft: 16,
-
-  //   height: 50,
-
-  //   /* Gray/01 */
-  //   backgroundColor: '#F6F6F6',
-  //   // backgroundColor: 'blue',
-
-  //   /* Gray/02 */
-  //   borderWidth: 1,
-  //   borderColor: '#E8E8E8',
-  //   borderRadius: 8,
-
-  //   fontFamily: 'Roboto',
-  //   fontStyle: 'normal',
-  //   fontWeight: 'normal',
-  //   fontSize: 16,
-  //   lineHeight: 19,
-  //   // /* identical to box height */
-
-  //   // /* Gray/03 */
-  //   color: '#212121',
-  //   textDecorationLine: 'none',
-  // },
-
   passwordWraper: {
     position: 'relative',
   },
@@ -262,9 +226,6 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
-    /* identical to box height */
-
-    /* White */
 
     color: '#FFFFFF',
   },
@@ -285,9 +246,6 @@ const styles = StyleSheet.create({
     fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
-    /* identical to box height */
-
-    // textAlign: 'center',
 
     color: '#1B4371',
   },

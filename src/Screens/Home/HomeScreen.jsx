@@ -47,7 +47,7 @@ export const HomeScreen = () => {
   };
 
   const optionsCreatePostsScreen = {
-    tabBarIcon: ({ focused, size, color }) => (
+    tabBarIcon: () => (
       <View style={styles.plusIcon}>
         <Feather name="plus" size={24} color="#FFFFFF" />
       </View>

@@ -3,10 +3,7 @@ import { useState, useEffect } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
 
-import {
-  // useIsFocused,
-  useNavigation,
-} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
 import {
   Text,
@@ -31,14 +28,14 @@ export default function CreatePostsScreen() {
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraRef, setCameraRef] = useState(null);
 
-  const [postPhotoUri, setPostPhotoUri] = useState(null); //setPostImg
+  const [postPhotoUri, setPostPhotoUri] = useState(null);
   const [postPhotoName, setPostPhotoName] = useState('');
 
   const [postLocation, setPostLocation] = useState(null);
   const [postAddress, setPostAddress] = useState('');
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [isNameFocus, setIsNameFocus] = useState(false); //   const isFocused = useIsFocused();
+  const [isNameFocus, setIsNameFocus] = useState(false); //
   const [isLocationFocus, setIsLocationFocus] = useState(false);
 
   const newPost = { id: nanoid(), postPhotoUri, postPhotoName, postAddress, postLocation };
@@ -95,7 +92,7 @@ export default function CreatePostsScreen() {
     if (cameraRef) {
       try {
         const { uri } = await cameraRef.takePictureAsync();
-        // console.log('makePostPhoto--<<uri', uri);
+        // console.log('makePostPhoto-->>uri', uri);
         await MediaLibrary.createAssetAsync(uri);
 
         setPostPhotoUri(uri);
@@ -140,8 +137,6 @@ export default function CreatePostsScreen() {
             {!isShowKeyboard && (
               <View>
                 {postPhotoUri ? (
-                  // TODO додати фото у замість камери
-
                   <ImageBackground style={styles.imageBackground} source={{ uri: postPhotoUri }}>
                     <TouchableOpacity onPress={makePostPhoto}>
                       <View style={styles.photoIconWrap}>

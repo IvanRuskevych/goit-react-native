@@ -1,15 +1,12 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { useSelector } from 'react-redux';
 
-// import { selectUser } from '../redux/auth/selectors';
 import { commonStyle } from '../../styles/commonStyles';
 const avatar = require('../../../images/user-photo.webp');
 
 function Comment({ data }) {
   const { date, text } = data;
-  // const user = useSelector(selectUser);
 
   return (
     <View style={styles.container}>

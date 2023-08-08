@@ -1,6 +1,5 @@
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native';
 import { Text, Image, View, StyleSheet } from 'react-native';
 
 import { commonStyle } from '../../styles/commonStyles';
@@ -11,7 +10,6 @@ export default function PostsScreen({ route }) {
   const navigation = useNavigation();
   console.log('route.params', route.params);
 
-  // postPhotoUri, postPhotoName, postAddress, postLocation
   let photo = null;
   let location = null;
   let title = null;
@@ -54,7 +52,7 @@ export default function PostsScreen({ route }) {
               color={commonStyle.color.accent}
               style={{ marginRight: 6 }}
               onPress={() => {
-                navigation.navigate('Comments', { photo });
+                navigation.navigate('CommentsScreen', { photo });
               }}
             />
             <Text style={[styles.text, { marginRight: 24 }]}>
@@ -68,11 +66,7 @@ export default function PostsScreen({ route }) {
                 size={24}
                 color={commonStyle.color.accent}
                 style={{ marginRight: 6 }}
-                // onPress={() => {
-                //   if (user.id !== idUser) {
-                //     dispatch(addLike({ idPost: id, idUser: user.id }));
-                //   }
-                // }}
+                // onPress={}
               />
               <Text>
                 {/* {likes.length} */}
@@ -85,9 +79,9 @@ export default function PostsScreen({ route }) {
               size={24}
               color={commonStyle.color.bgGray}
               style={{ marginLeft: 'auto', marginRight: 4 }}
-              // onPress={() => {
-              //   navigation.navigate('Map', { title, place, coords });
-              // }}
+              onPress={() => {
+                navigation.navigate('MapScreen', { title, place, location });
+              }}
             />
             <Text
               style={[
