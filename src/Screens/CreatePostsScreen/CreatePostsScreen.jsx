@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import * as MediaLibrary from 'expo-media-library';
+import * as Location from 'expo-location';
+
+import { useNavigation } from '@react-navigation/native';
+
 import {
   Text,
   StyleSheet,
@@ -8,22 +14,120 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
+  TouchableOpacity,
 } from 'react-native';
+
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Camera } from 'expo-camera';
+import { nanoid } from '@reduxjs/toolkit';
+import { ImageBackground } from 'react-native';
 
 export default function CreatePostsScreen() {
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
+  const navigation = useNavigation();
+
+  const [hasPermission, setHasPermission] = useState(null);
+  const [cameraRef, setCameraRef] = useState(null);
+
+  const [postPhotoUri, setPostPhotoUri] = useState(null);
+  const [postPhotoName, setPostPhotoName] = useState('');
+
+  const [postLocation, setPostLocation] = useState(null);
+  const [postAddress, setPostAddress] = useState('');
 
   const [isShowKeyboard, setIsShowKeyboard] = useState(false);
-  const [isNameFocus, setIsNameFocus] = useState(false);
+  const [isNameFocus, setIsNameFocus] = useState(false); //
   const [isLocationFocus, setIsLocationFocus] = useState(false);
+
+  const newPost = { id: nanoid(), postPhotoUri, postPhotoName, postAddress, postLocation };
+
+  // Camera & Location permissions
+  useEffect(() => {
+    setPostPhotoUri(null);
+    setPostLocation(null);
+
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      await MediaLibrary.requestPermissionsAsync();
+
+      setHasPermission(status === 'granted');
+    })();
+
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+      }
+    })();
+  }, []);
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   const keyboardHide = () => {
     setIsShowKeyboard(false);
     Keyboard.dismiss();
   };
+
+  const addPostLocation = async () => {
+    const location = await Location.getCurrentPositionAsync();
+    const coords = {
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    };
+    setPostLocation(coords);
+
+    const [address] = await Location.reverseGeocodeAsync({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+    });
+    setPostAddress(address.city);
+  };
+
+  const makePostPhoto = async () => {
+    if (cameraRef) {
+      try {
+        const { uri } = await cameraRef.takePictureAsync();
+        // console.log('makePostPhoto-->>uri', uri);
+        await MediaLibrary.createAssetAsync(uri);
+
+        setPostPhotoUri(uri);
+      } catch (error) {
+        console.log('Error-->>', error.message);
+      }
+    }
+
+    addPostLocation();
+  };
+
+  const clearCreatePostForm = () => {
+    setPostPhotoUri(null);
+    setPostPhotoName('');
+
+    setPostLocation(null);
+    setPostAddress('');
+
+    keyboardHide();
+  };
+
+  const onPressToPost = () => {
+    if (!postPhotoName.trim() || !postAddress) {
+      return alert('Будь ласка завантажте фото та заповніть всі поля');
+    }
+
+    // keyboardHide();
+
+    navigation.navigate('Публікації', newPost);
+
+    clearCreatePostForm();
+  };
+
+  const isPostFormFillup = () =>
+    postPhotoUri !== null && postPhotoName !== '' && postAddress !== '' ? false : true;
 
   return (
     <View style={styles.container}>
@@ -32,24 +136,37 @@ export default function CreatePostsScreen() {
           <KeyboardAvoidingView behavior={Platform.OS === 'ios' && 'padding'}>
             {!isShowKeyboard && (
               <View>
-                <View style={styles.imageBackground}>
-                  <View style={styles.photoIconWrap}>
-                    <MaterialIcons
-                      name="photo-camera"
-                      size={24}
-                      color="#BDBDBD"
-                    />
+                {postPhotoUri ? (
+                  <ImageBackground style={styles.imageBackground} source={{ uri: postPhotoUri }}>
+                    <TouchableOpacity onPress={makePostPhoto}>
+                      <View style={styles.photoIconWrap}>
+                        <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+                      </View>
+                    </TouchableOpacity>
+                  </ImageBackground>
+                ) : (
+                  <View style={styles.imageBackground}>
+                    <Camera style={styles.camera} ref={setCameraRef}>
+                      <TouchableOpacity onPress={makePostPhoto}>
+                        <View style={styles.photoIconWrap}>
+                          <MaterialIcons name="photo-camera" size={24} color="#BDBDBD" />
+                        </View>
+                      </TouchableOpacity>
+                    </Camera>
                   </View>
-                </View>
-                <Text style={styles.text}>Завантажте фото</Text>
+                )}
+
+                <Text style={styles.text}>
+                  {!postPhotoUri ? 'Завантажте фото' : 'Редагувати фото'}{' '}
+                </Text>
               </View>
             )}
 
             <TextInput
-              value={name}
-              onChangeText={(value) => setName(value)}
+              value={postPhotoName}
               placeholder="Назва..."
               placeholderTextColor={'#BDBDBD'}
+              onChangeText={(value) => setPostPhotoName(value)}
               onFocus={() => {
                 setIsShowKeyboard(true);
                 setIsNameFocus(true);
@@ -72,8 +189,8 @@ export default function CreatePostsScreen() {
                 }}
               />
               <TextInput
-                value={location}
-                onChangeText={(value) => setLocation(value)}
+                value={postAddress}
+                onChangeText={(value) => setPostAddress(value)}
                 placeholder="Місцевість..."
                 placeholderTextColor={'#BDBDBD'}
                 onFocus={() => {
@@ -89,13 +206,29 @@ export default function CreatePostsScreen() {
                 }}
               />
             </View>
-            <Pressable style={styles.button}>
-              <Text style={styles.buttonText}>Опубліковати</Text>
-            </Pressable>
+
+            <TouchableOpacity
+              style={
+                isPostFormFillup()
+                  ? styles.button
+                  : { ...styles.button, backgroundColor: '#ff6c00' }
+              }
+              disabled={isPostFormFillup()}
+              onPress={onPressToPost}
+            >
+              <Text
+                style={
+                  isPostFormFillup() ? styles.buttonText : { ...styles.buttonText, color: '#fff' }
+                }
+              >
+                Опублікувати
+              </Text>
+            </TouchableOpacity>
+
             <View style={styles.trashIconWrap}>
-              <Pressable style={styles.trashButton}>
+              <TouchableOpacity style={styles.trashButton} onPress={clearCreatePostForm}>
                 <Feather name="trash-2" size={24} color="#BDBDBD" />
-              </Pressable>
+              </TouchableOpacity>
             </View>
           </KeyboardAvoidingView>
         </View>
@@ -119,6 +252,9 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+
+    overflow: 'hidden',
+    // resizeMode: 'cover',
   },
 
   photoIconWrap: {
@@ -181,5 +317,11 @@ const styles = StyleSheet.create({
   trashIconWrap: {
     alignItems: 'center',
     marginTop: 100,
+  },
+  camera: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%',
+    width: '100%',
   },
 });
